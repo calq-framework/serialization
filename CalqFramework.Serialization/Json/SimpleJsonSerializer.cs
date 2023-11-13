@@ -1,37 +1,62 @@
 ﻿using System.Collections;
+using System.Text;
 using System.Text.Json;
 
-namespace CalqFramework.Serialization {
-    public class JsonSerializer {
-        public void Populate(Utf8JsonReader reader, object instance) {
-            if (instance == null) {
+namespace CalqFramework.Serialization.Json {
+    public class SimpleJsonSerializer : ICalqSerializer {
+
+        // TODO pass this via constructor
+        private readonly JsonSerializerOptions serializerOptions = new() {
+            IncludeFields = true
+        };
+
+        public ReadOnlySpan<byte> Serialize<T>(T obj) {
+            var json = System.Text.Json.JsonSerializer.Serialize(obj, serializerOptions);
+            return Encoding.UTF8.GetBytes(json);
+        }
+
+        public void Populate<T>(ReadOnlySpan<byte> data, T obj) {
+            var reader = new Utf8JsonReader(data, new JsonReaderOptions {
+                CommentHandling = JsonCommentHandling.Skip
+            });
+
+            if (obj == null)
+            {
                 throw new ArgumentException("instance can't be null");
             }
 
-            object? currentInstance = instance;
-            var currentType = instance.GetType();
+            object? currentInstance = obj;
+            var currentType = obj.GetType();
             var instanceStack = new Stack<object>();
 
-            void ReadObject(ref Utf8JsonReader reader) {
-                while (true) {
+            void ReadObject(ref Utf8JsonReader reader)
+            {
+                while (true)
+                {
                     reader.Read();
                     string propertyName;
-                    switch (reader.TokenType) {
+                    switch (reader.TokenType)
+                    {
                         case JsonTokenType.PropertyName:
                             propertyName = reader.GetString()!;
                             break;
                         case JsonTokenType.EndObject:
-                            if (instanceStack.Count == 0) {
-                                if (reader.Read()) {
+                            if (instanceStack.Count == 0)
+                            {
+                                if (reader.Read())
+                                {
                                     throw new JsonException();
                                 }
                                 return;
                             }
                             currentInstance = instanceStack.Pop();
-                            if (currentInstance is not ICollection) {
+                            if (currentInstance is not ICollection)
+                            {
                                 currentType = currentInstance.GetType();
                                 continue;
-                            } else {
+                            }
+                            else
+                            {
                                 currentType = currentInstance.GetType().GetGenericArguments()[0];
                                 return;
                             }
@@ -41,7 +66,8 @@ namespace CalqFramework.Serialization {
 
                     reader.Read();
                     object? value;
-                    switch (reader.TokenType) {
+                    switch (reader.TokenType)
+                    {
                         case JsonTokenType.False:
                         case JsonTokenType.True:
                             value = reader.GetBoolean();
@@ -57,12 +83,16 @@ namespace CalqFramework.Serialization {
                             break;
                         case JsonTokenType.StartObject:
                             instanceStack.Push(currentInstance);
-                            if (currentInstance is not ICollection) {
+                            if (currentInstance is not ICollection)
+                            {
                                 currentInstance = Reflection.GetOrInitializeFieldOrPropertyValue(currentType, currentInstance, propertyName);
-                            } else {
+                            }
+                            else
+                            {
                                 currentInstance = Reflection.GetOrInitializeChildValue((ICollection)currentInstance, propertyName);
                             }
-                            if (currentInstance == null) {
+                            if (currentInstance == null)
+                            {
                                 throw new JsonException();
                             }
                             currentType = currentInstance.GetType();
@@ -70,13 +100,17 @@ namespace CalqFramework.Serialization {
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
                             value = Reflection.GetOrInitializeFieldOrPropertyValue(currentType, currentInstance, propertyName);
-                            if (currentInstance is not ICollection) {
+                            if (currentInstance is not ICollection)
+                            {
                                 Reflection.SetFieldOrPropertyValue(currentType, currentInstance, propertyName, value);
-                            } else {
+                            }
+                            else
+                            {
                                 Reflection.SetChildValue((ICollection)currentInstance, propertyName, value);
                             }
                             currentInstance = value;
-                            if (currentInstance == null) {
+                            if (currentInstance == null)
+                            {
                                 throw new JsonException();
                             }
                             currentType = currentInstance.GetType().GetGenericArguments()[0];
@@ -85,19 +119,25 @@ namespace CalqFramework.Serialization {
                         default:
                             throw new JsonException();
                     }
-                    if (currentInstance is not ICollection) {
+                    if (currentInstance is not ICollection)
+                    {
                         Reflection.SetFieldOrPropertyValue(currentType, currentInstance, propertyName, value);
-                    } else {
+                    }
+                    else
+                    {
                         Reflection.SetChildValue((ICollection)currentInstance, propertyName, value);
                     }
                 }
             }
 
-            void ReadArray(ref Utf8JsonReader reader) {
-                while (true) {
+            void ReadArray(ref Utf8JsonReader reader)
+            {
+                while (true)
+                {
                     reader.Read();
                     object? value;
-                    switch (reader.TokenType) {
+                    switch (reader.TokenType)
+                    {
                         case JsonTokenType.False:
                         case JsonTokenType.True:
                             value = reader.GetBoolean();
@@ -113,10 +153,11 @@ namespace CalqFramework.Serialization {
                             break;
                         case JsonTokenType.StartObject:
                             instanceStack.Push(currentInstance);
-                            value = Activator.CreateInstance(currentType); // FIXME
+                            value = Activator.CreateInstance(currentInstance.GetType().GetGenericArguments()[0]);
                             Reflection.AddChildValue((ICollection)currentInstance, value);
                             currentInstance = value;
-                            if (currentInstance == null) {
+                            if (currentInstance == null)
+                            {
                                 throw new JsonException();
                             }
                             currentType = currentInstance.GetType();
@@ -124,26 +165,32 @@ namespace CalqFramework.Serialization {
                             continue;
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
-                            value = Activator.CreateInstance(currentType); // FIXME
+                            value = Activator.CreateInstance(currentInstance.GetType().GetGenericArguments()[0]);
                             Reflection.AddChildValue((ICollection)currentInstance, value);
                             currentInstance = value;
-                            if (currentInstance == null) {
+                            if (currentInstance == null)
+                            {
                                 throw new JsonException();
                             }
                             currentType = currentInstance.GetType().GetGenericArguments()[0];
                             continue;
                         case JsonTokenType.EndArray:
-                            if (instanceStack.Count == 0) {
-                                if (reader.Read()) {
+                            if (instanceStack.Count == 0)
+                            {
+                                if (reader.Read())
+                                {
                                     throw new JsonException();
                                 }
                                 return;
                             }
                             currentInstance = instanceStack.Pop();
-                            if (currentInstance is not ICollection) {
+                            if (currentInstance is not ICollection)
+                            {
                                 currentType = currentInstance.GetType();
                                 return;
-                            } else {
+                            }
+                            else
+                            {
                                 currentType = currentInstance.GetType().GetGenericArguments()[0];
                                 continue;
                             }
@@ -156,7 +203,8 @@ namespace CalqFramework.Serialization {
             }
 
             reader.Read();
-            switch (reader.TokenType) {
+            switch (reader.TokenType)
+            {
                 case JsonTokenType.StartObject:
                     ReadObject(ref reader);
                     break;
