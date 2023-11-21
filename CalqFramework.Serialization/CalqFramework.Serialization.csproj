@@ -8,6 +8,7 @@
     <Version>0.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
+    <!--<PackageReference Include="MemoryPack" Version="1.10.0" />-->
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

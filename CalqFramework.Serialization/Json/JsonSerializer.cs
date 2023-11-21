@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CalqFramework.Serialization.Json {
     public class JsonSerializer : ICalqSerializer {
-
         // TODO pass this via constructor
         private readonly JsonSerializerOptions serializerOptions = new() {
             IncludeFields = true
