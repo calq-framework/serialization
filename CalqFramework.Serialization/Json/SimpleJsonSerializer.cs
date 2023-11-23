@@ -5,6 +5,8 @@ using System.Text.Json;
 namespace CalqFramework.Serialization.Json {
     public class SimpleJsonSerializer : ICalqSerializer {
 
+        private static DefaultDataMemberAccessor dataMemberAccessor = new();
+
         // TODO pass this via constructor
         private readonly JsonSerializerOptions serializerOptions = new() {
             IncludeFields = true
@@ -26,7 +28,6 @@ namespace CalqFramework.Serialization.Json {
             }
 
             object? currentInstance = obj;
-            var currentType = obj.GetType();
             var instanceStack = new Stack<object>();
 
             void ReadObject(ref Utf8JsonReader reader)
@@ -52,12 +53,10 @@ namespace CalqFramework.Serialization.Json {
                             currentInstance = instanceStack.Pop();
                             if (currentInstance is not ICollection)
                             {
-                                currentType = currentInstance.GetType();
                                 continue;
                             }
                             else
                             {
-                                currentType = currentInstance.GetType().GetGenericArguments()[0];
                                 return;
                             }
                         default:
@@ -85,7 +84,7 @@ namespace CalqFramework.Serialization.Json {
                             instanceStack.Push(currentInstance);
                             if (currentInstance is not ICollection)
                             {
-                                currentInstance = Reflection.GetOrInitializeFieldOrPropertyValue(currentType, currentInstance, propertyName);
+                                currentInstance = dataMemberAccessor.GetOrInitializeDataMemberValue(currentInstance, propertyName);
                             }
                             else
                             {
@@ -95,14 +94,13 @@ namespace CalqFramework.Serialization.Json {
                             {
                                 throw new JsonException();
                             }
-                            currentType = currentInstance.GetType();
                             continue;
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
-                            value = Reflection.GetOrInitializeFieldOrPropertyValue(currentType, currentInstance, propertyName);
+                            value = dataMemberAccessor.GetOrInitializeDataMemberValue(currentInstance, propertyName);
                             if (currentInstance is not ICollection)
                             {
-                                Reflection.SetFieldOrPropertyValue(currentType, currentInstance, propertyName, value);
+                                dataMemberAccessor.SetDataMemberValue(currentInstance, propertyName, value);
                             }
                             else
                             {
@@ -113,7 +111,6 @@ namespace CalqFramework.Serialization.Json {
                             {
                                 throw new JsonException();
                             }
-                            currentType = currentInstance.GetType().GetGenericArguments()[0];
                             ReadArray(ref reader);
                             continue;
                         default:
@@ -121,7 +118,7 @@ namespace CalqFramework.Serialization.Json {
                     }
                     if (currentInstance is not ICollection)
                     {
-                        Reflection.SetFieldOrPropertyValue(currentType, currentInstance, propertyName, value);
+                        dataMemberAccessor.SetDataMemberValue(currentInstance, propertyName, value);
                     }
                     else
                     {
@@ -160,7 +157,6 @@ namespace CalqFramework.Serialization.Json {
                             {
                                 throw new JsonException();
                             }
-                            currentType = currentInstance.GetType();
                             ReadObject(ref reader);
                             continue;
                         case JsonTokenType.StartArray:
@@ -172,7 +168,6 @@ namespace CalqFramework.Serialization.Json {
                             {
                                 throw new JsonException();
                             }
-                            currentType = currentInstance.GetType().GetGenericArguments()[0];
                             continue;
                         case JsonTokenType.EndArray:
                             if (instanceStack.Count == 0)
@@ -186,15 +181,12 @@ namespace CalqFramework.Serialization.Json {
                             currentInstance = instanceStack.Pop();
                             if (currentInstance is not ICollection)
                             {
-                                currentType = currentInstance.GetType();
                                 return;
                             }
                             else
                             {
-                                currentType = currentInstance.GetType().GetGenericArguments()[0];
                                 continue;
                             }
-                            break;
                         default:
                             throw new JsonException();
                     }
