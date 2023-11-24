@@ -35,6 +35,20 @@ public class JsonSerializerTest
         Assert.Equal(30, targetObject.Age);
     }
 
+    // TODO add to BinarySerializerTest
+    [Fact]
+    public void Populate_ShouldHandleAnonymousObjects() {
+        var serializer = new JsonSerializer();
+        var anonymousObject = new { Name = "John", Age = 25 };
+        var targetObject = new SomeData { Name = "Alice", Age = 30 };
+
+        var jsonBytes = serializer.Serialize(anonymousObject);
+        serializer.Populate(jsonBytes, targetObject);
+
+        Assert.Equal("John", targetObject.Name);
+        Assert.Equal(25, targetObject.Age);
+    }
+
     [Fact]
     public void Populate_ShouldHandleInvalidJson() {
         var serializer = new JsonSerializer();

@@ -1,21 +1,25 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace CalqFramework.Serialization.Json {
-    public class JsonSerializer : ICalqSerializer {
-        // TODO pass this via constructor
-        private readonly JsonSerializerOptions serializerOptions = new() {
-            IncludeFields = true
-        };
+    public class JsonSerializer : ISerializer
+    {
+        private JsonSerializerOptions JsonSerializerOptions { get; } = new();
 
-        public ReadOnlySpan<byte> Serialize<T>(T obj) {
-            var json = System.Text.Json.JsonSerializer.Serialize(obj, serializerOptions);
-            return Encoding.UTF8.GetBytes(json);
+        public JsonSerializer() { }
+
+        public JsonSerializer(JsonSerializerOptions jsonSerializerOptions) {
+            JsonSerializerOptions = jsonSerializerOptions;
         }
 
-        public void Populate<T>(ReadOnlySpan<byte> data, T obj) {
+        public ReadOnlySpan<byte> Serialize<T>(T obj)
+        {
+            return System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(obj, JsonSerializerOptions);
+        }
+
+        public void Populate<T>(ReadOnlySpan<byte> data, T obj)
+        {
             JsonConvert.PopulateObject(Encoding.UTF8.GetString(data), obj);
         }
 

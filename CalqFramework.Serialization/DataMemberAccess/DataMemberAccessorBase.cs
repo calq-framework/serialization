@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections;
-using System.Reflection;
+﻿using System.Reflection;
 
-namespace CalqFramework.Serialization;
-public abstract class DataMemberAccessorBase {
+namespace CalqFramework.Serialization.DataMemberAccess;
+public class DataMemberAccessorBase {
+    private IDataMemberResolver DataMemberResolver { get; }
 
-    public abstract MemberInfo GetDataMember(Type type, string dataMemberKey);
+    public DataMemberAccessorBase(IDataMemberResolver dataMemberResolver) {
+        DataMemberResolver = dataMemberResolver;
+    }
 
-    private static bool IsField(MemberInfo memberInfo) {
+    protected static bool IsField(MemberInfo memberInfo) {
         return memberInfo.MemberType == MemberTypes.Field;
     }
 
@@ -16,7 +17,7 @@ public abstract class DataMemberAccessorBase {
     //}
 
     public Type GetDataMemberType(Type type, string dataMemberKey) {
-        var dataMember = GetDataMember(type, dataMemberKey);
+        var dataMember = DataMemberResolver.GetDataMember(type, dataMemberKey);
 
         if (IsField(dataMember)) {
             return ((FieldInfo)dataMember).FieldType;
@@ -26,7 +27,7 @@ public abstract class DataMemberAccessorBase {
     }
 
     public object? GetDataMemberValue(object obj, string dataMemberKey) {
-        var dataMember = GetDataMember(obj.GetType(), dataMemberKey);
+        var dataMember = DataMemberResolver.GetDataMember(obj.GetType(), dataMemberKey);
 
         if (IsField(dataMember)) {
             return ((FieldInfo)dataMember).GetValue(obj);
@@ -36,7 +37,7 @@ public abstract class DataMemberAccessorBase {
     }
 
     public object GetOrInitializeDataMemberValue(object obj, string dataMemberKey) {
-        var dataMember = GetDataMember(obj.GetType(), dataMemberKey);
+        var dataMember = DataMemberResolver.GetDataMember(obj.GetType(), dataMemberKey);
 
         if (IsField(dataMember)) {
             var value = ((FieldInfo)dataMember).GetValue(obj) ??
@@ -54,7 +55,7 @@ public abstract class DataMemberAccessorBase {
     }
 
     public void SetDataMemberValue(object obj, string dataMemberKey, object? value) {
-        var dataMember = GetDataMember(obj.GetType(), dataMemberKey);
+        var dataMember = DataMemberResolver.GetDataMember(obj.GetType(), dataMemberKey);
 
         if (IsField(dataMember)) {
             ((FieldInfo)dataMember).SetValue(obj, value);
@@ -64,7 +65,7 @@ public abstract class DataMemberAccessorBase {
     }
 
     public object InitializeDataMemberValue(object obj, string dataMemberKey) {
-        var dataMember = GetDataMember(obj.GetType(), dataMemberKey);
+        var dataMember = DataMemberResolver.GetDataMember(obj.GetType(), dataMemberKey);
 
         if (IsField(dataMember)) {
             var value = Activator.CreateInstance(((FieldInfo)dataMember).FieldType) ?? // might be null for nullables
@@ -77,20 +78,5 @@ public abstract class DataMemberAccessorBase {
             ((PropertyInfo)dataMember).SetValue(obj, value);
             return value;
         }
-    }
-
-    public bool IsPrimitive(ICollection collection) {
-        return IsPrimitive(collection.GetType().GetGenericArguments()[0]);
-    }
-
-    public bool IsPrimitive(object obj, string fieldOrPropertyName) {
-        return IsPrimitive(GetDataMemberType(obj.GetType(), fieldOrPropertyName));
-    }
-
-    public bool IsPrimitive(Type type) {
-        if (type.IsPrimitive || type == typeof(Decimal) || type == typeof(String)) {
-            return true;
-        }
-        return false;
     }
 }
