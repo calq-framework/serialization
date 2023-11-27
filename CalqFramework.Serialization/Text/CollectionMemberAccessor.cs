@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 
 namespace CalqFramework.Serialization.Text;
-internal static class CollectionMemberAccessor
+public static class CollectionMemberAccessor
 {
     public static object? GetChildValue(ICollection collection, string key)
     {
