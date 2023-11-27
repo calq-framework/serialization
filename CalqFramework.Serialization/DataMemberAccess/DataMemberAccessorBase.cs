@@ -9,7 +9,12 @@ namespace CalqFramework.Serialization.DataMemberAccess {
             BindingAttr = bindingAttr;
         }
 
-        public abstract MemberInfo GetDataMember(Type type, string dataMemberKey);
+        public abstract MemberInfo? GetDataMember(Type type, string dataMemberKey);
+
+        public MemberInfo GetDataMemberOrThrow(Type type, string dataMemberKey) {
+            return GetDataMember(type, dataMemberKey) ?? throw new MissingMemberException();
+        }
+
         public abstract Type GetDataMemberType(Type type, string dataMemberKey);
         public abstract object? GetDataMemberValue(object obj, string dataMemberKey);
         public abstract object GetOrInitializeDataMemberValue(object obj, string dataMemberKey);

@@ -2,7 +2,7 @@
 
 namespace CalqFramework.Serialization.DataMemberAccess {
     public interface IDataMemberAccessor {
-        public MemberInfo GetDataMember(Type type, string dataMemberKey);
+        public MemberInfo? GetDataMember(Type type, string dataMemberKey);
 
         public Type GetDataMemberType(Type type, string dataMemberKey);
 
