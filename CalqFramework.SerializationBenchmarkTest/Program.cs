@@ -42,25 +42,25 @@ namespace SourceGenTest {
             calqSerializer.Populate(jsonBytes, jsonObj);
         }
 
-        [Benchmark(Baseline = true)]
-        public SomeData DeserializeWithSystemTextJson() {
-            return System.Text.Json.JsonSerializer.Deserialize<SomeData>(jsonBytes);
-        }
+        //[Benchmark(Baseline = true)]
+        //public SomeData DeserializeWithSystemTextJson() {
+        //    return System.Text.Json.JsonSerializer.Deserialize<SomeData>(jsonBytes);
+        //}
 
-        [Benchmark]
-        public SomeData DeserializeWithMetadataJsonClassContext() {
-            return System.Text.Json.JsonSerializer.Deserialize(jsonBytes, metadataJsonClassContext.SomeData);
-        }
+        //[Benchmark]
+        //public SomeData DeserializeWithMetadataJsonClassContext() {
+        //    return System.Text.Json.JsonSerializer.Deserialize(jsonBytes, metadataJsonClassContext.SomeData);
+        //}
 
-        [Benchmark]
-        public SomeData DeserializeWithDefaultJsonClassContext() {
-            return System.Text.Json.JsonSerializer.Deserialize(jsonBytes, defaultJsonClassContext.SomeData);
-        }
+        //[Benchmark]
+        //public SomeData DeserializeWithDefaultJsonClassContext() {
+        //    return System.Text.Json.JsonSerializer.Deserialize(jsonBytes, defaultJsonClassContext.SomeData);
+        //}
 
-        [Benchmark]
-        public SomeData DeserializeWithNewtonsoftJson() {
-            return JsonConvert.DeserializeObject<SomeData>(jsonString);
-        }
+        //[Benchmark]
+        //public SomeData DeserializeWithNewtonsoftJson() {
+        //    return JsonConvert.DeserializeObject<SomeData>(jsonString);
+        //}
 
         [Benchmark]
         public SomeData DeserializeWithCalqSerializer() {
