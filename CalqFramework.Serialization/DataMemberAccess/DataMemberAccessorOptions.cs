@@ -5,8 +5,8 @@ namespace CalqFramework.Serialization.DataMemberAccess {
 
         public const BindingFlags DefaultLookup = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
 
-        public bool AccessFields { get; } = false;
-        public bool AccessProperties { get; } = true;
+        public bool AccessFields { get; init; } = false;
+        public bool AccessProperties { get; init; } = true;
 
         public BindingFlags BindingAttr { get; } = DefaultLookup;
 
