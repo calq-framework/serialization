@@ -1,3 +1,4 @@
+using CalqFramework.Serialization.DataMemberAccess;
 using CalqFramework.Serialization.Json;
 using System.Text;
 
@@ -6,6 +7,13 @@ namespace CalqFramework.SerializationTest;
 public class SimpleJsonSerializerTest {
     private ReadOnlySpan<byte> GetJsonBytes(string jsonText) {
         return Encoding.UTF8.GetBytes(jsonText);
+    }
+
+    [Fact]
+    public void Populate_ShouldPopulateObjectPropertiesxxxxxxxxxxxx() {
+        var x = typeof(DataMemberAccessorOptions).GetProperty("AccessFields");
+            var b = x.GetSetMethod()?.GetMethodBody()?.GetILAsByteArray();
+        var c = 1;
     }
 
     [Fact]

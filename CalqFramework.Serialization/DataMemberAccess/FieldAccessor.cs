@@ -5,6 +5,10 @@ namespace CalqFramework.Serialization.DataMemberAccess {
         public FieldAccessor(BindingFlags bindingAttr) : base(bindingAttr) {
         }
 
+        public override MemberInfo[] GetDataMembers(Type type) {
+            return type.GetFields(BindingAttr);
+        }
+
         public override MemberInfo? GetDataMember(Type type, string dataMemberKey) {
             return type.GetField(dataMemberKey, BindingAttr);
         }
