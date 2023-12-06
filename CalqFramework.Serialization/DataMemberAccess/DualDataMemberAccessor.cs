@@ -10,8 +10,8 @@ namespace CalqFramework.Serialization.DataMemberAccess {
             SecondaryAccessor = secondaryAccessor;
         }
 
-        public MemberInfo[] GetDataMembers(Type type) {
-            return PrimaryAccessor.GetDataMembers(type) ?? SecondaryAccessor.GetDataMembers(type);
+        public IDictionary<string, MemberInfo> GetDataMembersByKeys(Type type) {
+            return PrimaryAccessor.GetDataMembersByKeys(type) ?? SecondaryAccessor.GetDataMembersByKeys(type);
         }
 
         public MemberInfo? GetDataMember(Type type, string dataMemberKey) {

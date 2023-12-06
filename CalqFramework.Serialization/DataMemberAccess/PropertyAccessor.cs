@@ -5,8 +5,8 @@ namespace CalqFramework.Serialization.DataMemberAccess {
         public PropertyAccessor(BindingFlags bindingAttr) : base(bindingAttr) {
         }
 
-        public override MemberInfo[] GetDataMembers(Type type) {
-            return type.GetProperties(BindingAttr);
+        public override IDictionary<string, MemberInfo> GetDataMembersByKeys(Type type) {
+            return type.GetProperties(BindingAttr).ToDictionary(x => x.Name, x => (MemberInfo)x);
         }
 
         public override MemberInfo? GetDataMember(Type type, string dataMemberKey) {
