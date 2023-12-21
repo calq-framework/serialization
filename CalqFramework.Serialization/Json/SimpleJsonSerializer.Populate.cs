@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Text.Json;
-using CalqFramework.Serialization.Text;
+using CalqFramework.Serialization.DataAccess;
 
-namespace CalqFramework.Serialization.Json {
+namespace CalqFramework.Serialization.Json
+{
     public partial class SimpleJsonSerializer : ISerializer
     {
         public void Populate<T>(ReadOnlySpan<byte> data, T obj)
@@ -79,7 +80,7 @@ namespace CalqFramework.Serialization.Json {
                             }
                             else
                             {
-                                currentInstance = CollectionMemberAccessor.GetOrInitializeChildValue((ICollection)currentInstance, propertyName);
+                                currentInstance = CollectionAccessor.GetOrInitializeValue((ICollection)currentInstance, propertyName);
                             }
                             if (currentInstance == null)
                             {
@@ -95,7 +96,7 @@ namespace CalqFramework.Serialization.Json {
                             }
                             else
                             {
-                                CollectionMemberAccessor.SetChildValue((ICollection)currentInstance, propertyName, value);
+                                CollectionAccessor.SetValue((ICollection)currentInstance, propertyName, value);
                             }
                             currentInstance = value;
                             if (currentInstance == null)
@@ -113,7 +114,7 @@ namespace CalqFramework.Serialization.Json {
                     }
                     else
                     {
-                        CollectionMemberAccessor.SetChildValue((ICollection)currentInstance, propertyName, value);
+                        CollectionAccessor.SetValue((ICollection)currentInstance, propertyName, value);
                     }
                 }
             }
@@ -141,9 +142,7 @@ namespace CalqFramework.Serialization.Json {
                             break;
                         case JsonTokenType.StartObject:
                             instanceStack.Push(currentInstance);
-                            value = Activator.CreateInstance(currentInstance.GetType().GetGenericArguments()[0]);
-                            CollectionMemberAccessor.AddChildValue((ICollection)currentInstance, value);
-                            currentInstance = value;
+                            currentInstance = CollectionAccessor.AddValue((ICollection)currentInstance);
                             if (currentInstance == null)
                             {
                                 throw new JsonException();
@@ -152,9 +151,7 @@ namespace CalqFramework.Serialization.Json {
                             continue;
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
-                            value = Activator.CreateInstance(currentInstance.GetType().GetGenericArguments()[0]);
-                            CollectionMemberAccessor.AddChildValue((ICollection)currentInstance, value);
-                            currentInstance = value;
+                            currentInstance = CollectionAccessor.AddValue((ICollection)currentInstance);
                             if (currentInstance == null)
                             {
                                 throw new JsonException();
@@ -181,7 +178,7 @@ namespace CalqFramework.Serialization.Json {
                         default:
                             throw new JsonException();
                     }
-                    CollectionMemberAccessor.AddChildValue((ICollection)currentInstance, value);
+                    CollectionAccessor.AddValue((ICollection)currentInstance, value);
                 }
             }
 
