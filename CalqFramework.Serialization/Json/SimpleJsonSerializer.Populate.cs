@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Text.Json;
-using CalqFramework.Serialization.DataMemberAccess;
 using CalqFramework.Serialization.Text;
 
 namespace CalqFramework.Serialization.Json {
@@ -23,6 +22,7 @@ namespace CalqFramework.Serialization.Json {
 
             void ReadObject(ref Utf8JsonReader reader)
             {
+                var DataMemberAccessor = DataMemberAccessorFactory.CreateDataMemberAccessor(currentInstance);
                 while (true)
                 {
                     reader.Read();
@@ -75,7 +75,7 @@ namespace CalqFramework.Serialization.Json {
                             instanceStack.Push(currentInstance);
                             if (currentInstance is not ICollection)
                             {
-                                currentInstance = DataMemberAccessor.GetOrInitializeDataMemberValue(currentInstance, propertyName);
+                                currentInstance = DataMemberAccessor.GetOrInitializeValue(propertyName);
                             }
                             else
                             {
@@ -88,10 +88,10 @@ namespace CalqFramework.Serialization.Json {
                             continue;
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
-                            value = DataMemberAccessor.GetOrInitializeDataMemberValue(currentInstance, propertyName);
+                            value = DataMemberAccessor.GetOrInitializeValue(propertyName);
                             if (currentInstance is not ICollection)
                             {
-                                DataMemberAccessor.SetDataMemberValue(currentInstance, propertyName, value);
+                                DataMemberAccessor.SetValue(propertyName, value);
                             }
                             else
                             {
@@ -109,7 +109,7 @@ namespace CalqFramework.Serialization.Json {
                     }
                     if (currentInstance is not ICollection)
                     {
-                        DataMemberAccessor.SetDataMemberValue(currentInstance, propertyName, value);
+                        DataMemberAccessor.SetValue(propertyName, value);
                     }
                     else
                     {

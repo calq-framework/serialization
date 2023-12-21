@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 
-namespace CalqFramework.Serialization.DataMemberAccess {
-    public class DataMemberAccessorOptions {
+namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
+{
+    public class DataMemberAccessorOptions
+    {
 
         public const BindingFlags DefaultLookup = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
 
@@ -10,7 +12,8 @@ namespace CalqFramework.Serialization.DataMemberAccess {
 
         public BindingFlags BindingAttr { get; init; } = DefaultLookup;
 
-        public DataMemberAccessorOptions() {
+        public DataMemberAccessorOptions()
+        {
         }
     }
 }

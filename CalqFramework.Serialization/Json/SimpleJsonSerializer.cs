@@ -1,18 +1,20 @@
 ﻿using System.Text.Json;
-using CalqFramework.Serialization.DataMemberAccess;
+using CalqFramework.Serialization.DataAccess.DataMemberAccess;
 
-namespace CalqFramework.Serialization.Json {
+namespace CalqFramework.Serialization.Json
+{
     public partial class SimpleJsonSerializer : ISerializer
     {
-        private IDataMemberAccessor DataMemberAccessor { get; } = DataMemberAccessorFactory.DefaultDataMemberAccessor;
 
-        private JsonSerializerOptions JsonSerializerOptions { get; } = new();
+        public JsonSerializerOptions JsonSerializerOptions { get; init; }
+        public DataMemberAccessorOptions DataMemberAccessorOptions { get; init; }
 
-        public SimpleJsonSerializer() { }
+        private DataMemberAccessorFactoryBase DataMemberAccessorFactory { get; init; }
 
-        public SimpleJsonSerializer(IDataMemberAccessor dataMemberAccessor, JsonSerializerOptions jsonSerializerOptions) {
-            DataMemberAccessor = dataMemberAccessor;
-            JsonSerializerOptions = jsonSerializerOptions;
+        public SimpleJsonSerializer() {
+            JsonSerializerOptions ??= new();
+            DataMemberAccessorOptions ??= new();
+            DataMemberAccessorFactory ??= new DataMemberAccessorFactory(DataMemberAccessorOptions);
         }
     }
 }
