@@ -58,12 +58,11 @@ public class SimpleJsonSerializerTest {
     //    Assert.Equal(3, targetArray[2]);
     //}
 
-    // TODO
     //[Fact]
     //public void Populate_ShouldPopulateObjectWithArray() {
     //    var serializer = new SimpleJsonSerializer();
     //    var json = "{\"Name\":\"John\",\"Age\":25,\"Skills\":[\"Programming\",\"Problem Solving\"]}";
-    //    var targetObject = new MyObject();
+    //    var targetObject = new SomeData();
 
     //    var jsonBytes = GetJsonBytes(json);
     //    serializer.Populate(jsonBytes, targetObject);
@@ -109,24 +108,23 @@ public class SimpleJsonSerializerTest {
         Assert.Equal("Gaming", targetObject.Hobbies[1]);
     }
 
-    // TODO
-    //[Fact]
-    //public void Populate_ShouldPopulateDictionary() {
-    //    var serializer = new SimpleJsonSerializer();
-    //    var json = "{\"Key1\":{\"Name\":\"John\",\"Age\":25},\"Key2\":{\"Name\":\"Alice\",\"Age\":30}}";
-    //    var targetDictionary = new Dictionary<string, MyObject>();
+   [Fact]
+    public void Populate_ShouldPopulateDictionary() {
+        var serializer = new SimpleJsonSerializer();
+        var json = "{\"Key1\":{\"Name\":\"John\",\"Age\":25},\"Key2\":{\"Name\":\"Alice\",\"Age\":30}}";
+        var targetDictionary = new Dictionary<string, SomeData>();
 
-    //    var jsonBytes = GetJsonBytes(json);
-    //    serializer.Populate(jsonBytes, targetDictionary);
+        var jsonBytes = GetJsonBytes(json);
+        serializer.Populate(jsonBytes, targetDictionary);
 
-    //    Assert.Equal(2, targetDictionary.Count);
-    //    Assert.True(targetDictionary.ContainsKey("Key1"));
-    //    Assert.True(targetDictionary.ContainsKey("Key2"));
-    //    Assert.Equal("John", targetDictionary["Key1"].Name);
-    //    Assert.Equal(25, targetDictionary["Key1"].Age);
-    //    Assert.Equal("Alice", targetDictionary["Key2"].Name);
-    //    Assert.Equal(30, targetDictionary["Key2"].Age);
-    //}
+        Assert.Equal(2, targetDictionary.Count);
+        Assert.True(targetDictionary.ContainsKey("Key1"));
+        Assert.True(targetDictionary.ContainsKey("Key2"));
+        Assert.Equal("John", targetDictionary["Key1"].Name);
+        Assert.Equal(25, targetDictionary["Key1"].Age);
+        Assert.Equal("Alice", targetDictionary["Key2"].Name);
+        Assert.Equal(30, targetDictionary["Key2"].Age);
+    }
 
     [Fact]
     public void Populate_ShouldPopulateObjectWithDictionary() {

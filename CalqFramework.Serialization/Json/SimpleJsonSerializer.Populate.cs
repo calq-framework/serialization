@@ -43,14 +43,7 @@ namespace CalqFramework.Serialization.Json
                                 return;
                             }
                             currentInstance = instanceStack.Pop();
-                            if (currentInstance is not ICollection)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                return;
-                            }
+                            return;
                         default:
                             throw new JsonException();
                     }
@@ -82,26 +75,17 @@ namespace CalqFramework.Serialization.Json
                             {
                                 currentInstance = CollectionAccessor.GetOrInitializeValue((ICollection)currentInstance, propertyName);
                             }
-                            if (currentInstance == null)
-                            {
-                                throw new JsonException();
-                            }
+                            ReadObject(ref reader);
                             continue;
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
-                            value = DataMemberAccessor.GetOrInitializeValue(propertyName);
                             if (currentInstance is not ICollection)
                             {
-                                DataMemberAccessor.SetValue(propertyName, value);
+                                currentInstance = DataMemberAccessor.GetOrInitializeValue(propertyName);
                             }
                             else
                             {
-                                CollectionAccessor.SetValue((ICollection)currentInstance, propertyName, value);
-                            }
-                            currentInstance = value;
-                            if (currentInstance == null)
-                            {
-                                throw new JsonException();
+                                currentInstance = CollectionAccessor.GetOrInitializeValue((ICollection)currentInstance, propertyName);
                             }
                             ReadArray(ref reader);
                             continue;
@@ -143,19 +127,12 @@ namespace CalqFramework.Serialization.Json
                         case JsonTokenType.StartObject:
                             instanceStack.Push(currentInstance);
                             currentInstance = CollectionAccessor.AddValue((ICollection)currentInstance);
-                            if (currentInstance == null)
-                            {
-                                throw new JsonException();
-                            }
                             ReadObject(ref reader);
                             continue;
                         case JsonTokenType.StartArray:
                             instanceStack.Push(currentInstance);
                             currentInstance = CollectionAccessor.AddValue((ICollection)currentInstance);
-                            if (currentInstance == null)
-                            {
-                                throw new JsonException();
-                            }
+                            ReadArray(ref reader);
                             continue;
                         case JsonTokenType.EndArray:
                             if (instanceStack.Count == 0)
@@ -167,14 +144,7 @@ namespace CalqFramework.Serialization.Json
                                 return;
                             }
                             currentInstance = instanceStack.Pop();
-                            if (currentInstance is not ICollection)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                continue;
-                            }
+                            return;
                         default:
                             throw new JsonException();
                     }
