@@ -1,5 +1,7 @@
 ﻿namespace CalqFramework.Serialization.DataAccess {
     public interface IDataAccessor {
+        bool HasKey(string key);
+
         public Type GetType(string key);
 
         public object? GetValue(string key);

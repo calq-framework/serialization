@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
-{
+namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     internal class DualDataMemberAccessor : IDataAccessor
     {
         public DataMemberAccessorBase PrimaryAccessor { get; }
@@ -68,6 +67,14 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             else
             {
                 SecondaryAccessor.SetValue(dataMemberKey, value);
+            }
+        }
+
+        public bool HasKey(string dataMemberKey) {
+            if (PrimaryAccessor.GetDataMember(dataMemberKey) != null) {
+                return PrimaryAccessor.HasKey(dataMemberKey);
+            } else {
+                return SecondaryAccessor.HasKey(dataMemberKey);
             }
         }
     }
