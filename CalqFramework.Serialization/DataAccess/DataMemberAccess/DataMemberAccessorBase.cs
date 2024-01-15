@@ -22,7 +22,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
                 return true;
             }
             result = null!;
-            return true;
+            return false;
         }
 
         public MemberInfo GetDataMember(string key) {
