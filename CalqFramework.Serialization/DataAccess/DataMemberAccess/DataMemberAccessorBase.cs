@@ -15,11 +15,25 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 
         public abstract IDictionary<string, MemberInfo> GetDataMembersByKeys();
 
-        public abstract MemberInfo? GetDataMember(string key);
-
-        public MemberInfo GetDataMemberOrThrow(string key) {
-            return GetDataMember(key) ?? throw new MissingMemberException();
+        public bool TryGetDataMember(string key, out MemberInfo result) {
+            var dataMember = GetDataMemberCore(key);
+            if (dataMember != null) {
+                result = dataMember;
+                return true;
+            }
+            result = null!;
+            return true;
         }
+
+        public MemberInfo GetDataMember(string key) {
+            if(TryGetDataMember(key, out var dataMember)) {
+                return dataMember;
+            } else {
+                throw new MissingMemberException();
+            }
+        }
+
+        protected abstract MemberInfo? GetDataMemberCore(string key);
 
         public override bool HasKey(string key) {
             var dataMember = GetDataMember(key);

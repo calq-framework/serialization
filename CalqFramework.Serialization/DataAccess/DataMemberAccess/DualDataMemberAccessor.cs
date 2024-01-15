@@ -19,9 +19,26 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             return result;
         }
 
-        public MemberInfo? GetDataMember(string key)
+        public MemberInfo GetDataMember(string key) {
+            if (PrimaryAccessor.TryGetDataMember(key, out var primaryDataMember)) {
+                return primaryDataMember;
+            }
+            return SecondaryAccessor.GetDataMember(key);
+        }
+
+
+        public bool TryGetDataMember(string key, out MemberInfo result)
         {
-            return PrimaryAccessor.GetDataMember(key) ?? SecondaryAccessor.GetDataMember(key);
+            if (PrimaryAccessor.TryGetDataMember(key, out var primaryDataMember)) {
+                result = primaryDataMember;
+                return true;
+            }
+            else if (SecondaryAccessor.TryGetDataMember(key, out var secondaryDataMember)) {
+                result = secondaryDataMember;
+                return true;
+            }
+            result = null!;
+            return false;
         }
 
         public Type GetType(string key)
@@ -77,14 +94,6 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
                 return PrimaryAccessor.HasKey(key);
             } else {
                 return SecondaryAccessor.HasKey(key);
-            }
-        }
-
-        public MemberInfo GetDataMemberOrThrow(string key) {
-            if (PrimaryAccessor.HasKey(key)) {
-                return PrimaryAccessor.GetDataMemberOrThrow(key);
-            } else {
-                return SecondaryAccessor.GetDataMemberOrThrow(key);
             }
         }
 
