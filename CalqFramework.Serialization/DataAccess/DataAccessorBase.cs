@@ -18,8 +18,12 @@ namespace CalqFramework.Serialization.DataAccess
             }
             else
             {
-                CollectionAccessor.AddValue(collectionObj, value);
+                AddValue(collectionObj, value);
             }
+        }
+
+        protected virtual void AddValue(ICollection collectionObj, object? value) {
+            CollectionAccessor.AddValue(collectionObj, value);
         }
 
         public abstract void SetValue(string key, object? value);
