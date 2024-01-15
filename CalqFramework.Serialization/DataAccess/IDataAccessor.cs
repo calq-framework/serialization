@@ -10,6 +10,6 @@
 
         public void SetValue(string key, object? value);
 
-        public void SetOrAddValue(string key, object? value);
+        public bool SetOrAddValue(string key, object? value);
     }
 }

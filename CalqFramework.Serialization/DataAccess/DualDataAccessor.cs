@@ -86,13 +86,13 @@
             }
         }
 
-        public void SetOrAddValue(string key, object? value) {
+        public bool SetOrAddValue(string key, object? value) {
             AssertNoCollision(key);
 
             if (PrimaryAccessor.HasKey(key)) {
-                PrimaryAccessor.SetOrAddValue(key, value);
+                return PrimaryAccessor.SetOrAddValue(key, value);
             } else {
-                SecondaryAccessor.SetOrAddValue(key, value);
+                return SecondaryAccessor.SetOrAddValue(key, value);
             }
         }
     }

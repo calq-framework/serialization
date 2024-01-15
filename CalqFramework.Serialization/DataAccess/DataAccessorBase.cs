@@ -9,16 +9,18 @@ namespace CalqFramework.Serialization.DataAccess
         public abstract object? GetValue(string key);
         public abstract bool HasKey(string key);
 
-        public void SetOrAddValue(string key, object? value)
+        public virtual bool SetOrAddValue(string key, object? value)
         {
             var obj = GetValue(key);
             if (obj is not ICollection collectionObj)
             {
                 SetValue(key, value);
+                return false;
             }
             else
             {
                 AddValue(collectionObj, value);
+                return true;
             }
         }
 
