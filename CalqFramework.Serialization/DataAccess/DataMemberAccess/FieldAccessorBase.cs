@@ -8,23 +8,23 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
         {
         }
 
-        public override Type GetType(string dataMemberKey)
+        public override Type GetType(string key)
         {
-            var dataMember = GetDataMemberOrThrow(dataMemberKey);
+            var dataMember = GetDataMemberOrThrow(key);
 
             return ((FieldInfo)dataMember).FieldType;
         }
 
-        public override object? GetValue(string dataMemberKey)
+        public override object? GetValue(string key)
         {
-            var dataMember = GetDataMemberOrThrow(dataMemberKey);
+            var dataMember = GetDataMemberOrThrow(key);
 
             return ((FieldInfo)dataMember).GetValue(Obj);
         }
 
-        public override object GetOrInitializeValue(string dataMemberKey)
+        public override object GetOrInitializeValue(string key)
         {
-            var dataMember = GetDataMemberOrThrow(dataMemberKey);
+            var dataMember = GetDataMemberOrThrow(key);
 
             var value = ((FieldInfo)dataMember).GetValue(Obj) ??
                    Activator.CreateInstance(((FieldInfo)dataMember).FieldType) ??
@@ -33,9 +33,9 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             return value;
         }
 
-        public override void SetValue(string dataMemberKey, object? value)
+        public override void SetValue(string key, object? value)
         {
-            var dataMember = GetDataMemberOrThrow(dataMemberKey);
+            var dataMember = GetDataMemberOrThrow(key);
 
             ((FieldInfo)dataMember).SetValue(Obj, value);
         }

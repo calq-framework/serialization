@@ -13,9 +13,9 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             return Type.GetProperties(BindingAttr).ToDictionary(x => x.Name, x => (MemberInfo)x);
         }
 
-        public override MemberInfo? GetDataMember(string dataMemberKey)
+        public override MemberInfo? GetDataMember(string key)
         {
-            return Type.GetProperty(dataMemberKey, BindingAttr);
+            return Type.GetProperty(key, BindingAttr);
         }
     }
 }

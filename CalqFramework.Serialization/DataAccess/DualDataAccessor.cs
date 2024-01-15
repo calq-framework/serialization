@@ -1,25 +1,15 @@
-﻿using System.Reflection;
+﻿using CalqFramework.Serialization.DataAccess.DataMemberAccess;
 
-namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
-    public class DualDataMemberAccessor : IDataMemberAccessor
+namespace CalqFramework.Serialization.DataAccess {
+    public class DualDataAccessor : IDataAccessor
     {
-        public DataMemberAccessorBase PrimaryAccessor { get; }
-        public DataMemberAccessorBase SecondaryAccessor { get; }
+        public IDataAccessor PrimaryAccessor { get; }
+        public IDataAccessor SecondaryAccessor { get; }
 
-        public DualDataMemberAccessor(DataMemberAccessorBase primaryAccessor, DataMemberAccessorBase secondaryAccessor)
+        public DualDataAccessor(DataMemberAccessorBase primaryAccessor, DataMemberAccessorBase secondaryAccessor)
         {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
-        }
-
-        public IDictionary<string, MemberInfo> GetDataMembersByKeys()
-        {
-            return PrimaryAccessor.GetDataMembersByKeys() ?? SecondaryAccessor.GetDataMembersByKeys();
-        }
-
-        public MemberInfo? GetDataMember(string key)
-        {
-            return PrimaryAccessor.GetDataMember(key) ?? SecondaryAccessor.GetDataMember(key);
         }
 
         public Type GetType(string key)
@@ -70,19 +60,15 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             }
         }
 
-        public bool HasKey(string key) {
-            if (PrimaryAccessor.HasKey(key)) {
+        public bool HasKey(string key)
+        {
+            if (PrimaryAccessor.HasKey(key))
+            {
                 return PrimaryAccessor.HasKey(key);
-            } else {
-                return SecondaryAccessor.HasKey(key);
             }
-        }
-
-        public MemberInfo GetDataMemberOrThrow(string key) {
-            if (PrimaryAccessor.HasKey(key)) {
-                return PrimaryAccessor.GetDataMemberOrThrow(key);
-            } else {
-                return SecondaryAccessor.GetDataMemberOrThrow(key);
+            else
+            {
+                return SecondaryAccessor.HasKey(key);
             }
         }
     }

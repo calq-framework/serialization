@@ -8,7 +8,7 @@ public abstract class DataMemberAccessorFactoryBase
         DataMemberAccessorOptions = dataMemberAccessorOptions;
     }
 
-    public virtual IDataAccessor CreateDataMemberAccessor(object obj)
+    public virtual IDataMemberAccessor CreateDataMemberAccessor(object obj)
     {
         if (DataMemberAccessorOptions.AccessFields && DataMemberAccessorOptions.AccessProperties)
         {
@@ -28,7 +28,7 @@ public abstract class DataMemberAccessorFactoryBase
         }
     }
 
-    protected IDataAccessor CreateFieldAndPropertyAccessor(object obj)
+    protected DualDataMemberAccessor CreateFieldAndPropertyAccessor(object obj)
     {
         return new DualDataMemberAccessor(CreateFieldAccessor(obj), CreatePropertyAccessor(obj));
     }
