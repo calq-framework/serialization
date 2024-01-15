@@ -36,7 +36,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
         protected abstract MemberInfo? GetDataMemberCore(string key);
 
         public override bool HasKey(string key) {
-            var dataMember = GetDataMember(key);
+            var dataMember = GetDataMemberCore(key);
 
             return dataMember == null ? false : true;
         }
