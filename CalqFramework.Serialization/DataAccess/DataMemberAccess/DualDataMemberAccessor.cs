@@ -13,7 +13,10 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
         public IDictionary<string, MemberInfo> GetDataMembersByKeys()
         {
-            return PrimaryAccessor.GetDataMembersByKeys() ?? SecondaryAccessor.GetDataMembersByKeys();
+            var primaryResult = PrimaryAccessor.GetDataMembersByKeys();
+            var secondaryResult = SecondaryAccessor.GetDataMembersByKeys();
+            var result = primaryResult.Concat(secondaryResult).ToDictionary(kv => kv.Key, kv => kv.Value);
+            return result;
         }
 
         public MemberInfo? GetDataMember(string key)
