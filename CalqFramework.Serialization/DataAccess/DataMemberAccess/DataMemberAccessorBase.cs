@@ -2,7 +2,7 @@
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 {
-    public abstract class DataMemberAccessorBase : IDataMemberAccessor {
+    public abstract class DataMemberAccessorBase : DataAccessorBase, IDataMemberAccessor {
         public object Obj { get; }
         public Type Type { get; }
         public BindingFlags BindingAttr { get; }
@@ -21,11 +21,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             return GetDataMember(key) ?? throw new MissingMemberException();
         }
 
-        public abstract Type GetType(string key);
-        public abstract object? GetValue(string key);
-        public abstract object GetOrInitializeValue(string key);
-        public abstract void SetValue(string key, object? value);
-        public bool HasKey(string key) {
+        public override bool HasKey(string key) {
             var dataMember = GetDataMember(key);
 
             return dataMember == null ? false : true;

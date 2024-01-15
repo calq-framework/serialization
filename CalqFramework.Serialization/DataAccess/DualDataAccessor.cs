@@ -1,19 +1,25 @@
-﻿using CalqFramework.Serialization.DataAccess.DataMemberAccess;
-
-namespace CalqFramework.Serialization.DataAccess {
+﻿namespace CalqFramework.Serialization.DataAccess {
     public class DualDataAccessor : IDataAccessor
     {
-        public IDataAccessor PrimaryAccessor { get; }
-        public IDataAccessor SecondaryAccessor { get; }
+        public DataAccessorBase PrimaryAccessor { get; }
+        public DataAccessorBase SecondaryAccessor { get; }
 
-        public DualDataAccessor(DataMemberAccessorBase primaryAccessor, DataMemberAccessorBase secondaryAccessor)
+        public DualDataAccessor(DataAccessorBase primaryAccessor, DataAccessorBase secondaryAccessor)
         {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
         }
 
+        private void AssertNoCollision(string key) {
+            if (PrimaryAccessor.HasKey(key) && SecondaryAccessor.HasKey(key)) {
+                throw new Exception("collision");
+            }
+        }
+
         public Type GetType(string key)
         {
+            AssertNoCollision(key);
+
             if (PrimaryAccessor.HasKey(key))
             {
                 return PrimaryAccessor.GetType(key);
@@ -26,6 +32,8 @@ namespace CalqFramework.Serialization.DataAccess {
 
         public object? GetValue(string key)
         {
+            AssertNoCollision(key);
+
             if (PrimaryAccessor.HasKey(key))
             {
                 return PrimaryAccessor.GetValue(key);
@@ -38,6 +46,8 @@ namespace CalqFramework.Serialization.DataAccess {
 
         public object GetOrInitializeValue(string key)
         {
+            AssertNoCollision(key);
+
             if (PrimaryAccessor.HasKey(key))
             {
                 return PrimaryAccessor.GetOrInitializeValue(key);
@@ -50,6 +60,8 @@ namespace CalqFramework.Serialization.DataAccess {
 
         public void SetValue(string key, object? value)
         {
+            AssertNoCollision(key);
+
             if (PrimaryAccessor.HasKey(key))
             {
                 PrimaryAccessor.SetValue(key, value);
@@ -62,6 +74,8 @@ namespace CalqFramework.Serialization.DataAccess {
 
         public bool HasKey(string key)
         {
+            AssertNoCollision(key);
+
             if (PrimaryAccessor.HasKey(key))
             {
                 return PrimaryAccessor.HasKey(key);
@@ -69,6 +83,16 @@ namespace CalqFramework.Serialization.DataAccess {
             else
             {
                 return SecondaryAccessor.HasKey(key);
+            }
+        }
+
+        public void SetOrAddValue(string key, object? value) {
+            AssertNoCollision(key);
+
+            if (PrimaryAccessor.HasKey(key)) {
+                PrimaryAccessor.SetOrAddValue(key, value);
+            } else {
+                SecondaryAccessor.SetOrAddValue(key, value);
             }
         }
     }

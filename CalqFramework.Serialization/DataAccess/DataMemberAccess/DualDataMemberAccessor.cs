@@ -6,8 +6,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         public DataMemberAccessorBase PrimaryAccessor { get; }
         public DataMemberAccessorBase SecondaryAccessor { get; }
 
-        public DualDataMemberAccessor(DataMemberAccessorBase primaryAccessor, DataMemberAccessorBase secondaryAccessor)
-        {
+        public DualDataMemberAccessor(DataMemberAccessorBase primaryAccessor, DataMemberAccessorBase secondaryAccessor) {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
         }
@@ -83,6 +82,14 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
                 return PrimaryAccessor.GetDataMemberOrThrow(key);
             } else {
                 return SecondaryAccessor.GetDataMemberOrThrow(key);
+            }
+        }
+
+        public void SetOrAddValue(string key, object? value) {
+            if (PrimaryAccessor.HasKey(key)) {
+                PrimaryAccessor.SetOrAddValue(key, value);
+            } else {
+                SecondaryAccessor.SetOrAddValue(key, value);
             }
         }
     }

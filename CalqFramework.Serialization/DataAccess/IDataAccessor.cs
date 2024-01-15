@@ -9,5 +9,7 @@
         public object GetOrInitializeValue(string key);
 
         public void SetValue(string key, object? value);
+
+        public void SetOrAddValue(string key, object? value);
     }
 }
