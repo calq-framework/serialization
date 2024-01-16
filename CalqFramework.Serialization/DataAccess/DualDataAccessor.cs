@@ -1,10 +1,10 @@
 ﻿namespace CalqFramework.Serialization.DataAccess {
     public class DualDataAccessor : IDataAccessor
     {
-        public DataAccessorBase PrimaryAccessor { get; }
-        public DataAccessorBase SecondaryAccessor { get; }
+        public IDataAccessor PrimaryAccessor { get; }
+        public IDataAccessor SecondaryAccessor { get; }
 
-        public DualDataAccessor(DataAccessorBase primaryAccessor, DataAccessorBase secondaryAccessor)
+        public DualDataAccessor(IDataAccessor primaryAccessor, IDataAccessor secondaryAccessor)
         {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
