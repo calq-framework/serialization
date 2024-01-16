@@ -3,10 +3,12 @@
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     public class DualDataMemberAccessor : IDataMemberAccessor
     {
-        public DataMemberAccessorBase PrimaryAccessor { get; }
-        public DataMemberAccessorBase SecondaryAccessor { get; }
+        public IDataMemberAccessor PrimaryAccessor { get; }
+        public IDataMemberAccessor SecondaryAccessor { get; }
 
-        public DualDataMemberAccessor(DataMemberAccessorBase primaryAccessor, DataMemberAccessorBase secondaryAccessor) {
+        public object Obj => PrimaryAccessor.Obj;
+
+        public DualDataMemberAccessor(IDataMemberAccessor primaryAccessor, IDataMemberAccessor secondaryAccessor) {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
         }
