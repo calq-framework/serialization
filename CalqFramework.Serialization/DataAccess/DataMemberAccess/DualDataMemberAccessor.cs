@@ -28,6 +28,9 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             return SecondaryAccessor.GetDataMember(key);
         }
 
+        public bool HasDataMember(MemberInfo memberInfo) {
+            return PrimaryAccessor.HasDataMember(memberInfo) || SecondaryAccessor.HasDataMember(memberInfo);
+        }
 
         public bool TryGetDataMember(string key, out MemberInfo result)
         {
@@ -41,6 +44,13 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             }
             result = null!;
             return false;
+        }
+
+        public string DataMemberToString(MemberInfo memberInfo) {
+            if (PrimaryAccessor.HasDataMember(memberInfo)) {
+                return PrimaryAccessor.DataMemberToString(memberInfo);
+            }
+            return SecondaryAccessor.DataMemberToString(memberInfo);
         }
 
         public Type GetType(string key)
@@ -92,11 +102,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         }
 
         public bool HasKey(string key) {
-            if (PrimaryAccessor.HasKey(key)) {
-                return PrimaryAccessor.HasKey(key);
-            } else {
-                return SecondaryAccessor.HasKey(key);
-            }
+            return PrimaryAccessor.HasKey(key) || SecondaryAccessor.HasKey(key);
         }
 
         public bool SetOrAddValue(string key, object? value) {

@@ -13,6 +13,8 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             Type = obj.GetType();
         }
 
+        public abstract bool HasDataMember(MemberInfo memberInfo);
+
         public abstract IDictionary<string, MemberInfo> GetDataMembersByKeys();
 
         public bool TryGetDataMember(string key, out MemberInfo result) {
@@ -32,6 +34,8 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
                 throw new MissingMemberException();
             }
         }
+
+        public abstract string DataMemberToString(MemberInfo memberInfo);
 
         protected abstract MemberInfo? GetDataMemberCore(string key);
 
