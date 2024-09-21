@@ -1,10 +1,16 @@
 ﻿namespace CalqFramework.Serialization.Text;
 public static class ValueParser
 {
+    public static bool IsParseable(Type type)
+    {
+        return type.IsPrimitive || type == typeof(string);
+    }
+
     public static T ParseValue<T>(string value)
     {
         return (T)ParseValue(value, typeof(T));
     }
+
     public static object ParseValue(string value, Type targetType)
     {
         if (Nullable.GetUnderlyingType(targetType) != null)
