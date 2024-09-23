@@ -112,5 +112,44 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
                 return SecondaryAccessor.SetOrAddValue(key, value);
             }
         }
+
+        public bool Contains(MemberInfo member) {
+            return PrimaryAccessor.Contains(member) || SecondaryAccessor.Contains(member);
+        }
+
+        public Type GetType(MemberInfo member) {
+            if (PrimaryAccessor.Contains(member)) {
+                return PrimaryAccessor.GetType(member);
+            }
+            return SecondaryAccessor.GetType(member);
+        }
+
+        public object? GetValue(MemberInfo member) {
+            if (PrimaryAccessor.Contains(member)) {
+                return PrimaryAccessor.GetValue(member);
+            }
+            return SecondaryAccessor.GetValue(member);
+        }
+
+        public object GetOrInitializeValue(MemberInfo member) {
+            if (PrimaryAccessor.Contains(member)) {
+                return PrimaryAccessor.GetOrInitializeValue(member);
+            }
+            return SecondaryAccessor.GetOrInitializeValue(member);
+        }
+
+        public void SetValue(MemberInfo member, object? value) {
+            if (PrimaryAccessor.Contains(member)) {
+                PrimaryAccessor.SetValue(member, value);
+            }
+            SecondaryAccessor.SetValue(member, value);
+        }
+
+        public bool SetOrAddValue(MemberInfo member, object? value) {
+            if (PrimaryAccessor.Contains(member)) {
+                return PrimaryAccessor.SetOrAddValue(member, value);
+            }
+            return SecondaryAccessor.SetOrAddValue(member, value);
+        }
     }
 }

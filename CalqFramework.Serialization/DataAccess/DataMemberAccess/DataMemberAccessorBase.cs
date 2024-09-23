@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 {
@@ -43,6 +44,32 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             var dataMember = GetDataMemberCore(key);
 
             return dataMember == null ? false : true;
+        }
+
+        public bool Contains(MemberInfo member) {
+            return HasKey(member.Name);
+        }
+        public Type GetType(MemberInfo member) {
+            return GetType(member.Name);
+        }
+        public object? GetValue(MemberInfo member) {
+            return GetValue(member.Name);
+        }
+        public object GetOrInitializeValue(MemberInfo member) {
+            return GetOrInitializeValue(member.Name);
+        }
+        public void SetValue(MemberInfo member, object? value) {
+            SetValue(member.Name, value);
+        }
+        public virtual bool SetOrAddValue(MemberInfo member, object? value) {
+            var obj = GetValue(member);
+            if (obj is not ICollection collectionObj) {
+                SetValue(member, value);
+                return false;
+            } else {
+                AddValue(collectionObj, value);
+                return true;
+            }
         }
     }
 }

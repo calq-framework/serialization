@@ -8,6 +8,14 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
         {
         }
 
+        public override bool HasDataMember(MemberInfo memberInfo) {
+            return memberInfo is PropertyInfo;
+        }
+
+        public override string DataMemberToString(MemberInfo memberInfo) {
+            return memberInfo.Name;
+        }
+
         public override Type GetType(string key)
         {
             var dataMember = GetDataMember(key);
