@@ -1,6 +1,6 @@
 ﻿namespace CalqFramework.Serialization.DataAccess {
     public interface IDataAccessor<TKey, TValue> {
-        bool HasKey(TKey key);
+        bool Contains(TKey key);
 
         public Type GetType(TKey key);
 

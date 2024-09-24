@@ -7,7 +7,7 @@ namespace CalqFramework.Serialization.DataAccess
         public abstract object GetOrInitializeValue(TKey key);
         public abstract Type GetType(TKey key);
         public abstract object? GetValue(TKey key);
-        public abstract bool HasKey(TKey key);
+        public abstract bool Contains(TKey key);
 
         public virtual bool SetOrAddValue(TKey key, TValue? value)
         {

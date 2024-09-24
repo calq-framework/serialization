@@ -55,7 +55,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
         public Type GetType(string key)
         {
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 return PrimaryAccessor.GetType(key);
             }
@@ -67,7 +67,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
         public object? GetValue(string key)
         {
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 return PrimaryAccessor.GetValue(key);
             }
@@ -79,7 +79,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
         public object GetOrInitializeValue(string key)
         {
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 return PrimaryAccessor.GetOrInitializeValue(key);
             }
@@ -91,7 +91,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
         public void SetValue(string key, object? value)
         {
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 PrimaryAccessor.SetValue(key, value);
             }
@@ -101,12 +101,12 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             }
         }
 
-        public bool HasKey(string key) {
-            return PrimaryAccessor.HasKey(key) || SecondaryAccessor.HasKey(key);
+        public bool Contains(string key) {
+            return PrimaryAccessor.Contains(key) || SecondaryAccessor.Contains(key);
         }
 
         public bool SetOrAddValue(string key, object? value) {
-            if (PrimaryAccessor.HasKey(key)) {
+            if (PrimaryAccessor.Contains(key)) {
                 return PrimaryAccessor.SetOrAddValue(key, value);
             } else {
                 return SecondaryAccessor.SetOrAddValue(key, value);

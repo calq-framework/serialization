@@ -11,7 +11,7 @@
         }
 
         private void AssertNoCollision(TKey key) {
-            if (PrimaryAccessor.HasKey(key) && SecondaryAccessor.HasKey(key)) {
+            if (PrimaryAccessor.Contains(key) && SecondaryAccessor.Contains(key)) {
                 throw new Exception("collision");
             }
         }
@@ -20,7 +20,7 @@
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 return PrimaryAccessor.GetType(key);
             }
@@ -34,7 +34,7 @@
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 return PrimaryAccessor.GetValue(key);
             }
@@ -48,7 +48,7 @@
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 return PrimaryAccessor.GetOrInitializeValue(key);
             }
@@ -62,7 +62,7 @@
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
                 PrimaryAccessor.SetValue(key, value);
             }
@@ -72,24 +72,24 @@
             }
         }
 
-        public bool HasKey(TKey key)
+        public bool Contains(TKey key)
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.HasKey(key))
+            if (PrimaryAccessor.Contains(key))
             {
-                return PrimaryAccessor.HasKey(key);
+                return PrimaryAccessor.Contains(key);
             }
             else
             {
-                return SecondaryAccessor.HasKey(key);
+                return SecondaryAccessor.Contains(key);
             }
         }
 
         public bool SetOrAddValue(TKey key, TValue? value) {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.HasKey(key)) {
+            if (PrimaryAccessor.Contains(key)) {
                 return PrimaryAccessor.SetOrAddValue(key, value);
             } else {
                 return SecondaryAccessor.SetOrAddValue(key, value);

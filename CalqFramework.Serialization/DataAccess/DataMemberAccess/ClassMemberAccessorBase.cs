@@ -40,14 +40,14 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 
         protected abstract MemberInfo? GetDataMemberCore(string key);
 
-        public override bool HasKey(string key) {
+        public override bool Contains(string key) {
             var dataMember = GetDataMemberCore(key);
 
             return dataMember == null ? false : true;
         }
 
         public bool Contains(MemberInfo member) {
-            return HasKey(member.Name);
+            return Contains(member.Name);
         }
         public Type GetType(MemberInfo member) {
             return GetType(member.Name);
