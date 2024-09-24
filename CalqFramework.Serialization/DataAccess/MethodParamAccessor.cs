@@ -3,7 +3,7 @@ using System.Collections;
 using System.Reflection;
 
 namespace CalqFramework.Cli.DataAccess {
-    internal class MethodParamAccessor : DataAccessorBase
+    internal class MethodParamAccessor : DataAccessorBase<string, object>
     {
         public ParameterInfo[] Parameters { get; }
         private object?[] ParamValues { get; }

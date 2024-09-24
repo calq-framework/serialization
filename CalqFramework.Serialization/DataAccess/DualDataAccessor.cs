@@ -1,22 +1,22 @@
 ﻿namespace CalqFramework.Serialization.DataAccess {
-    public class DualDataAccessor : IDataAccessor
+    public class DualDataAccessor<TKey, TValue> : IDataAccessor<TKey, TValue>
     {
-        public IDataAccessor PrimaryAccessor { get; }
-        public IDataAccessor SecondaryAccessor { get; }
+        public IDataAccessor<TKey, TValue> PrimaryAccessor { get; }
+        public IDataAccessor<TKey, TValue> SecondaryAccessor { get; }
 
-        public DualDataAccessor(IDataAccessor primaryAccessor, IDataAccessor secondaryAccessor)
+        public DualDataAccessor(IDataAccessor<TKey, TValue> primaryAccessor, IDataAccessor<TKey, TValue> secondaryAccessor)
         {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
         }
 
-        private void AssertNoCollision(string key) {
+        private void AssertNoCollision(TKey key) {
             if (PrimaryAccessor.HasKey(key) && SecondaryAccessor.HasKey(key)) {
                 throw new Exception("collision");
             }
         }
 
-        public Type GetType(string key)
+        public Type GetType(TKey key)
         {
             AssertNoCollision(key);
 
@@ -30,7 +30,7 @@
             }
         }
 
-        public object? GetValue(string key)
+        public object? GetValue(TKey key)
         {
             AssertNoCollision(key);
 
@@ -44,7 +44,7 @@
             }
         }
 
-        public object GetOrInitializeValue(string key)
+        public object GetOrInitializeValue(TKey key)
         {
             AssertNoCollision(key);
 
@@ -58,7 +58,7 @@
             }
         }
 
-        public void SetValue(string key, object? value)
+        public void SetValue(TKey key, TValue? value)
         {
             AssertNoCollision(key);
 
@@ -72,7 +72,7 @@
             }
         }
 
-        public bool HasKey(string key)
+        public bool HasKey(TKey key)
         {
             AssertNoCollision(key);
 
@@ -86,7 +86,7 @@
             }
         }
 
-        public bool SetOrAddValue(string key, object? value) {
+        public bool SetOrAddValue(TKey key, TValue? value) {
             AssertNoCollision(key);
 
             if (PrimaryAccessor.HasKey(key)) {

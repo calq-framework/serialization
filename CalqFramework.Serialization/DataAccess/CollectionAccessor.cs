@@ -8,9 +8,12 @@ public static class CollectionAccessor
     {
         return collection switch
         {
-            Array array => array.GetValue(int.Parse(key)),
-            IList list => list[int.Parse(key)],
-            IDictionary dictionary => dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])],
+            Array array => 
+            array.GetValue(int.Parse(key)),
+            IList list => 
+            list[int.Parse(key)],
+            IDictionary dictionary => 
+            dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])],
             _ => throw new Exception("unsupported collection")
         };
     }

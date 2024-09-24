@@ -2,14 +2,14 @@
 
 namespace CalqFramework.Serialization.DataAccess
 {
-    public abstract class DataAccessorBase : IDataAccessor
+    public abstract class DataAccessorBase<TKey, TValue> : IDataAccessor<TKey, TValue>
     {
-        public abstract object GetOrInitializeValue(string key);
-        public abstract Type GetType(string key);
-        public abstract object? GetValue(string key);
-        public abstract bool HasKey(string key);
+        public abstract object GetOrInitializeValue(TKey key);
+        public abstract Type GetType(TKey key);
+        public abstract object? GetValue(TKey key);
+        public abstract bool HasKey(TKey key);
 
-        public virtual bool SetOrAddValue(string key, object? value)
+        public virtual bool SetOrAddValue(TKey key, TValue? value)
         {
             var obj = GetValue(key);
             if (obj is not ICollection collectionObj)
@@ -24,10 +24,10 @@ namespace CalqFramework.Serialization.DataAccess
             }
         }
 
-        protected virtual void AddValue(ICollection collectionObj, object? value) {
+        protected virtual void AddValue(ICollection collectionObj, TValue? value) {
             CollectionAccessor.AddValue(collectionObj, value);
         }
 
-        public abstract void SetValue(string key, object? value);
+        public abstract void SetValue(TKey key, TValue? value);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
-    public interface IDataMemberAccessor : IDataAccessor {
+    public interface IClassMemberAccessor : IDataAccessor<string, object> {
         object Obj { get; }
         bool HasDataMember(MemberInfo memberInfo);
         bool TryGetDataMember(string key, out MemberInfo result);

@@ -8,7 +8,7 @@ public abstract class DataMemberAccessorFactoryBase
         DataMemberAccessorOptions = dataMemberAccessorOptions;
     }
 
-    public virtual IDataMemberAccessor CreateDataMemberAccessor(object obj)
+    public virtual IClassMemberAccessor CreateDataMemberAccessor(object obj)
     {
         if (DataMemberAccessorOptions.AccessFields && DataMemberAccessorOptions.AccessProperties)
         {

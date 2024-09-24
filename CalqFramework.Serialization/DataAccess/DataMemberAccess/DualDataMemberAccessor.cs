@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
-    public class DualDataMemberAccessor : IDataMemberAccessor
+    public class DualDataMemberAccessor : IClassMemberAccessor
     {
-        public IDataMemberAccessor PrimaryAccessor { get; }
-        public IDataMemberAccessor SecondaryAccessor { get; }
+        public IClassMemberAccessor PrimaryAccessor { get; }
+        public IClassMemberAccessor SecondaryAccessor { get; }
 
         public object Obj => PrimaryAccessor.Obj;
 
-        public DualDataMemberAccessor(IDataMemberAccessor primaryAccessor, IDataMemberAccessor secondaryAccessor) {
+        public DualDataMemberAccessor(IClassMemberAccessor primaryAccessor, IClassMemberAccessor secondaryAccessor) {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
         }

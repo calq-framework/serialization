@@ -1,15 +1,15 @@
 ﻿namespace CalqFramework.Serialization.DataAccess {
-    public interface IDataAccessor {
-        bool HasKey(string key);
+    public interface IDataAccessor<TKey, TValue> {
+        bool HasKey(TKey key);
 
-        public Type GetType(string key);
+        public Type GetType(TKey key);
 
-        public object? GetValue(string key);
+        public object? GetValue(TKey key);
 
-        public object GetOrInitializeValue(string key);
+        public object GetOrInitializeValue(TKey key);
 
-        public void SetValue(string key, object? value);
+        public void SetValue(TKey key, TValue? value);
 
-        public bool SetOrAddValue(string key, object? value);
+        public bool SetOrAddValue(TKey key, TValue? value);
     }
 }

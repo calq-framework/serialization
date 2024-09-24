@@ -3,12 +3,12 @@ using System.Reflection;
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 {
-    public abstract class DataMemberAccessorBase : DataAccessorBase, IDataMemberAccessor {
+    public abstract class ClassMemberAccessorBase : DataAccessorBase<string, object>, IClassMemberAccessor {
         public object Obj { get; }
         public Type Type { get; }
         public BindingFlags BindingAttr { get; }
 
-        public DataMemberAccessorBase(object obj, BindingFlags bindingAttr) {
+        public ClassMemberAccessorBase(object obj, BindingFlags bindingAttr) {
             Obj = obj;
             BindingAttr = bindingAttr;
             Type = obj.GetType();

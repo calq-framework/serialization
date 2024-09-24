@@ -2,7 +2,7 @@
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 {
-    public abstract class FieldAccessorBase : DataMemberAccessorBase
+    public abstract class FieldAccessorBase : ClassMemberAccessorBase
     {
         public FieldAccessorBase(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr)
         {
