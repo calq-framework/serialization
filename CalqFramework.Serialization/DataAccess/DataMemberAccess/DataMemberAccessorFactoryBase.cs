@@ -1,6 +1,8 @@
-﻿namespace CalqFramework.Serialization.DataAccess.DataMemberAccess;
-public abstract class DataMemberAccessorFactoryBase
-{
+﻿using System.Reflection;
+
+namespace CalqFramework.Serialization.DataAccess.DataMemberAccess;
+public abstract class DataMemberAccessorFactoryBase<TKey, TValue> {
+
     public DataMemberAccessorOptions DataMemberAccessorOptions { get; }
 
     public DataMemberAccessorFactoryBase(DataMemberAccessorOptions dataMemberAccessorOptions)
@@ -8,7 +10,7 @@ public abstract class DataMemberAccessorFactoryBase
         DataMemberAccessorOptions = dataMemberAccessorOptions;
     }
 
-    public virtual IClassMemberAccessor CreateDataMemberAccessor(object obj)
+    public virtual IDataAccessor<TKey, TValue, MemberInfo> CreateDataMemberAccessor(object obj)
     {
         if (DataMemberAccessorOptions.AccessFields && DataMemberAccessorOptions.AccessProperties)
         {
@@ -28,16 +30,10 @@ public abstract class DataMemberAccessorFactoryBase
         }
     }
 
-    protected DualDataMemberAccessor CreateFieldAndPropertyAccessor(object obj)
+    protected IDataAccessor<TKey, TValue, MemberInfo> CreateFieldAndPropertyAccessor(object obj)
     {
-        return new DualDataMemberAccessor(CreateFieldAccessor(obj), CreatePropertyAccessor(obj));
+        return new DualDataAccessor<TKey, TValue, MemberInfo>(CreateFieldAccessor(obj), CreatePropertyAccessor(obj));
     }
-    protected virtual FieldAccessorBase CreateFieldAccessor(object obj)
-    {
-        return new FieldAccessor(obj, DataMemberAccessorOptions.BindingAttr);
-    }
-    protected virtual PropertyAccessorBase CreatePropertyAccessor(object obj)
-    {
-        return new PropertyAccessor(obj, DataMemberAccessorOptions.BindingAttr);
-    }
+    protected abstract IDataAccessor<TKey, TValue, MemberInfo> CreateFieldAccessor(object obj);
+    protected abstract IDataAccessor<TKey, TValue, MemberInfo> CreatePropertyAccessor(object obj);
 }

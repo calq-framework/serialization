@@ -3,7 +3,7 @@ using System.Collections;
 using System.Reflection;
 
 namespace CalqFramework.Cli.DataAccess {
-    internal class MethodParamAccessor : DataAccessorBase<string, object>
+    internal class MethodParamAccessor : IDataAccessor<string, object?>
     {
         public ParameterInfo[] Parameters { get; }
         private object?[] ParamValues { get; }
@@ -101,7 +101,7 @@ namespace CalqFramework.Cli.DataAccess {
             AssignedParameters.Add(Parameters[index]);
         }
 
-        public override object GetOrInitializeValue(string key)
+        public  object GetOrInitializeValue(string key)
         {
             if (TryGetParamIndex(key, out var index))
             {
@@ -114,7 +114,7 @@ namespace CalqFramework.Cli.DataAccess {
             throw new MissingMemberException();
         }
 
-        public override Type GetType(string key)
+        public  Type GetType(string key)
         {
             if (TryGetParamIndex(key, out var index))
             {
@@ -123,7 +123,7 @@ namespace CalqFramework.Cli.DataAccess {
             throw new MissingMemberException();
         }
 
-        public override object? GetValue(string key)
+        public  object? GetValue(string key)
         {
             if (TryGetParamIndex(key, out var index))
             {
@@ -132,12 +132,12 @@ namespace CalqFramework.Cli.DataAccess {
             throw new MissingMemberException();
         }
 
-        public override bool Contains(string key)
+        public  bool Contains(string key)
         {
             return TryGetParamIndex(key, out var _);
         }
 
-        public override void SetValue(string key, object? value)
+        public  void SetValue(string key, object? value)
         {
             if (TryGetParamIndex(key, out var index))
             {
@@ -148,7 +148,7 @@ namespace CalqFramework.Cli.DataAccess {
             throw new MissingMemberException();
         }
 
-        public override bool SetOrAddValue(string key, object? value)
+        public  bool SetOrAddValue(string key, object? value)
         {
             var type = GetType(key);
             var isCollection = type.GetInterface(nameof(ICollection)) != null;
@@ -160,7 +160,7 @@ namespace CalqFramework.Cli.DataAccess {
             else
             {
                 var collectionObj = (GetOrInitializeValue(key) as ICollection)!;
-                AddValue(collectionObj, value);
+                //AddValue(collectionObj, value);
                 TryGetParamIndex(key, out var index);
                 AssignedParameters.Add(Parameters[index]);
                 return true;

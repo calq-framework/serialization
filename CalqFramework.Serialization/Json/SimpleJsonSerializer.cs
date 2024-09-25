@@ -9,7 +9,7 @@ namespace CalqFramework.Serialization.Json
         public JsonSerializerOptions JsonSerializerOptions { get; init; }
         public DataMemberAccessorOptions DataMemberAccessorOptions { get; init; }
 
-        private DataMemberAccessorFactoryBase DataMemberAccessorFactory { get; init; }
+        private DataMemberAccessorFactory DataMemberAccessorFactory { get; init; }
 
         public SimpleJsonSerializer() {
             JsonSerializerOptions ??= new();

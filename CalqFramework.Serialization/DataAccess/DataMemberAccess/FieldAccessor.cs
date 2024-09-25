@@ -2,15 +2,8 @@
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 {
-    sealed public class FieldAccessor : FieldAccessorBase
-    {
-        public FieldAccessor(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr)
-        {
-        }
-
-        public override IDictionary<string, MemberInfo> GetDataMembersByKeys()
-        {
-            return Type.GetFields(BindingAttr).ToDictionary(x => x.Name, x => (MemberInfo)x);
+    sealed public class FieldAccessor : FieldAccessorBase<string> {
+        public FieldAccessor(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
 
         protected override MemberInfo? GetDataMemberCore(string key) {
