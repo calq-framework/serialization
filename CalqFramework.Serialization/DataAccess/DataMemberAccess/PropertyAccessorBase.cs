@@ -2,6 +2,8 @@
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     public abstract class PropertyAccessorBase<TKey> : ClassMemberResolverBase<TKey, object?>, IDataAccessor<TKey, object?, MemberInfo> {
+        public IEnumerable<MemberInfo> DataMediators => Type.GetProperties();
+
         public PropertyAccessorBase(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
 
@@ -29,18 +31,6 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             ((PropertyInfo)dataMediator).SetValue(Obj, value);
         }
 
-        public bool SetOrAddValue(MemberInfo dataMediator, object? value) {
-            throw new NotImplementedException();
-        }
-
-        public override string DataMemberToString(MemberInfo memberInfo) {
-            throw new NotImplementedException();
-        }
-
-        public override IDictionary<TKey, MemberInfo> GetDataMembersByKeys() {
-            throw new NotImplementedException();
-        }
-
         public object GetOrInitializeValue(TKey key) {
             var dataMediator = GetDataMediator(key);
             return GetOrInitializeValue(dataMediator);
@@ -56,18 +46,13 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             return GetOrInitializeValue(dataMediator);
         }
 
-        public override bool HasDataMember(MemberInfo memberInfo) {
-            throw new NotImplementedException();
-        }
-
-        public bool SetOrAddValue(TKey key, object? value) {
-            var dataMediator = GetDataMediator(key);
-            return SetOrAddValue(dataMediator, value);
-        }
-
         public void SetValue(TKey key, object? value) {
             var dataMediator = GetDataMediator(key);
             SetValue(dataMediator, value);
+        }
+
+        public string DataMediatorToString(MemberInfo dataMediator) {
+            return dataMediator.Name;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 {
-    public abstract class ClassMemberResolverBase<TKey, TValue> : IClassMemberResolver<TKey, MemberInfo> {
+    public abstract class ClassMemberResolverBase<TKey, TValue> : IDataMediatorResolver<TKey, MemberInfo> {
         public object Obj { get; }
         public Type Type { get; }
         public BindingFlags BindingAttr { get; }
@@ -14,10 +14,6 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             BindingAttr = bindingAttr;
             Type = obj.GetType();
         }
-
-        public abstract bool HasDataMember(MemberInfo memberInfo);
-
-        public abstract IDictionary<TKey, MemberInfo> GetDataMembersByKeys();
 
         public bool TryGetDataMediator(TKey key, out MemberInfo result) {
             var dataMember = GetDataMemberCore(key);
@@ -44,6 +40,5 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
         }
 
         protected abstract MemberInfo? GetDataMemberCore(TKey key);
-        public abstract string DataMemberToString(MemberInfo memberInfo);
     }
 }

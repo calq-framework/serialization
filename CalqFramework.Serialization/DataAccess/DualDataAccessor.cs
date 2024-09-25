@@ -85,21 +85,13 @@
                 return SecondaryAccessor.Contains(key);
             }
         }
-
-        public bool SetOrAddValue(TKey key, TValue? value) {
-            AssertNoCollision(key);
-
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.SetOrAddValue(key, value);
-            } else {
-                return SecondaryAccessor.SetOrAddValue(key, value);
-            }
-        }
     }
 
     public class DualDataAccessor<TKey, TValue, TDataMediator> : IDataAccessor<TKey, TValue, TDataMediator> {
         public IDataAccessor<TKey, TValue, TDataMediator> PrimaryAccessor { get; }
         public IDataAccessor<TKey, TValue, TDataMediator> SecondaryAccessor { get; }
+
+        public IEnumerable<TDataMediator> DataMediators => PrimaryAccessor.DataMediators.Concat(SecondaryAccessor.DataMediators);
 
         public DualDataAccessor(IDataAccessor<TKey, TValue, TDataMediator> primaryAccessor, IDataAccessor<TKey, TValue, TDataMediator> secondaryAccessor) {
             PrimaryAccessor = primaryAccessor;
@@ -162,16 +154,6 @@
             }
         }
 
-        public bool SetOrAddValue(TKey key, TValue? value) {
-            AssertNoCollision(key);
-
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.SetOrAddValue(key, value);
-            } else {
-                return SecondaryAccessor.SetOrAddValue(key, value);
-            }
-        }
-
         public Type GetType(TDataMediator dataMediator) {
             if (PrimaryAccessor.Contains(dataMediator)) {
                 return PrimaryAccessor.GetType(dataMediator);
@@ -212,14 +194,6 @@
             }
         }
 
-        public bool SetOrAddValue(TDataMediator dataMediator, TValue? value) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
-                return PrimaryAccessor.SetOrAddValue(dataMediator, value);
-            } else {
-                return SecondaryAccessor.SetOrAddValue(dataMediator, value);
-            }
-        }
-
         public bool TryGetDataMediator(TKey key, out TDataMediator result) {
             PrimaryAccessor.TryGetDataMediator(key, out result);
             if (result != null) {
@@ -234,6 +208,14 @@
 
         public TDataMediator GetDataMediator(TKey key) {
             return PrimaryAccessor.GetDataMediator(key) ?? SecondaryAccessor.GetDataMediator(key); ;
+        }
+
+        public string DataMediatorToString(TDataMediator dataMediator) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                return PrimaryAccessor.DataMediatorToString(dataMediator);
+            } else {
+                return SecondaryAccessor.DataMediatorToString(dataMediator);
+            }
         }
     }
 }

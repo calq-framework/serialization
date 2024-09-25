@@ -1,15 +1,19 @@
-﻿namespace CalqFramework.Serialization.DataAccess {
+﻿using System.Reflection;
+
+namespace CalqFramework.Serialization.DataAccess {
     public interface IDirectDataAccessor<TDataMediator, TValue> {
+        IEnumerable<TDataMediator> DataMediators { get; }
+
+        string DataMediatorToString(TDataMediator dataMediator);
+
         bool Contains(TDataMediator dataMediator);
 
-        public Type GetType(TDataMediator dataMediator);
+        Type GetType(TDataMediator dataMediator);
 
-        public object? GetValue(TDataMediator dataMediator);
+        object? GetValue(TDataMediator dataMediator);
 
-        public object GetOrInitializeValue(TDataMediator dataMediator);
+        object GetOrInitializeValue(TDataMediator dataMediator);
 
-        public void SetValue(TDataMediator dataMediator, TValue? value);
-
-        public bool SetOrAddValue(TDataMediator dataMediator, TValue? value);
+        void SetValue(TDataMediator dataMediator, TValue? value);
     }
 }

@@ -1,16 +1,16 @@
-﻿namespace CalqFramework.Serialization.DataAccess {
+﻿using System.Reflection;
+
+namespace CalqFramework.Serialization.DataAccess {
     public interface IDataAccessor<TKey, TValue> {
         bool Contains(TKey key);
 
-        public Type GetType(TKey key);
+        Type GetType(TKey key);
 
-        public object? GetValue(TKey key);
+        object? GetValue(TKey key);
 
-        public object GetOrInitializeValue(TKey key);
+        object GetOrInitializeValue(TKey key);
 
-        public void SetValue(TKey key, TValue? value);
-
-        public bool SetOrAddValue(TKey key, TValue? value);
+        void SetValue(TKey key, TValue? value);
     }
 
     public interface IDataAccessor<TKey, TValue, TDataMediator> : IDataMediatorResolver<TKey, TDataMediator>, IDataAccessor<TKey, TValue>, IDirectDataAccessor<TDataMediator, TValue> { }
