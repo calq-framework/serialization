@@ -2,7 +2,7 @@
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
-    public interface IClassMemberResolver<TKey, TValue> : IMediaryKeyResolver<TKey, TValue> {
+    public interface IClassMemberResolver<TKey, TValue> : IDataMediatorResolver<TKey, TValue> {
         object Obj { get; }
         bool HasDataMember(MemberInfo memberInfo);
         string DataMemberToString(MemberInfo memberInfo);

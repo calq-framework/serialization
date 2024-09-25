@@ -5,31 +5,31 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         public PropertyAccessorBase(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
 
-        public bool Contains(MemberInfo key) {
-            return key is PropertyInfo;
+        public bool Contains(MemberInfo dataMediator) {
+            return dataMediator is PropertyInfo;
         }
 
-        public Type GetType(MemberInfo key) {
-            return ((PropertyInfo)key).PropertyType;
+        public Type GetType(MemberInfo dataMediator) {
+            return ((PropertyInfo)dataMediator).PropertyType;
         }
 
-        public object? GetValue(MemberInfo key) {
-            return ((PropertyInfo)key).GetValue(Obj);
+        public object? GetValue(MemberInfo dataMediator) {
+            return ((PropertyInfo)dataMediator).GetValue(Obj);
         }
 
-        public object GetOrInitializeValue(MemberInfo key) {
-            var value = ((PropertyInfo)key).GetValue(Obj) ??
-                   Activator.CreateInstance(((PropertyInfo)key).PropertyType) ??
-                   Activator.CreateInstance(Nullable.GetUnderlyingType(((PropertyInfo)key).PropertyType)!)!;
-            ((PropertyInfo)key).SetValue(Obj, value);
+        public object GetOrInitializeValue(MemberInfo dataMediator) {
+            var value = ((PropertyInfo)dataMediator).GetValue(Obj) ??
+                   Activator.CreateInstance(((PropertyInfo)dataMediator).PropertyType) ??
+                   Activator.CreateInstance(Nullable.GetUnderlyingType(((PropertyInfo)dataMediator).PropertyType)!)!;
+            ((PropertyInfo)dataMediator).SetValue(Obj, value);
             return value;
         }
 
-        public void SetValue(MemberInfo key, object? value) {
-            ((PropertyInfo)key).SetValue(Obj, value);
+        public void SetValue(MemberInfo dataMediator, object? value) {
+            ((PropertyInfo)dataMediator).SetValue(Obj, value);
         }
 
-        public bool SetOrAddValue(MemberInfo key, object? value) {
+        public bool SetOrAddValue(MemberInfo dataMediator, object? value) {
             throw new NotImplementedException();
         }
 
@@ -42,18 +42,18 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         }
 
         public object GetOrInitializeValue(TKey key) {
-            var dataMember = GetMediaryKey(key);
-            return GetOrInitializeValue(dataMember);
+            var dataMediator = GetDataMediator(key);
+            return GetOrInitializeValue(dataMediator);
         }
 
         public Type GetType(TKey key) {
-            var dataMember = GetMediaryKey(key);
-            return GetType(dataMember);
+            var dataMediator = GetDataMediator(key);
+            return GetType(dataMediator);
         }
 
         public object? GetValue(TKey key) {
-            var dataMember = GetMediaryKey(key);
-            return GetOrInitializeValue(dataMember);
+            var dataMediator = GetDataMediator(key);
+            return GetOrInitializeValue(dataMediator);
         }
 
         public override bool HasDataMember(MemberInfo memberInfo) {
@@ -61,13 +61,13 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         }
 
         public bool SetOrAddValue(TKey key, object? value) {
-            var dataMember = GetMediaryKey(key);
-            return SetOrAddValue(dataMember, value);
+            var dataMediator = GetDataMediator(key);
+            return SetOrAddValue(dataMediator, value);
         }
 
         public void SetValue(TKey key, object? value) {
-            var dataMember = GetMediaryKey(key);
-            SetValue(dataMember, value);
+            var dataMediator = GetDataMediator(key);
+            SetValue(dataMediator, value);
         }
     }
 }

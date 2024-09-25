@@ -19,7 +19,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
 
         public abstract IDictionary<TKey, MemberInfo> GetDataMembersByKeys();
 
-        public bool TryGetMediaryKey(TKey key, out MemberInfo result) {
+        public bool TryGetDataMediator(TKey key, out MemberInfo result) {
             var dataMember = GetDataMemberCore(key);
             if (dataMember != null) {
                 result = dataMember;
@@ -29,8 +29,8 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
             return false;
         }
 
-        public MemberInfo GetMediaryKey(TKey key) {
-            if(TryGetMediaryKey(key, out var dataMember)) {
+        public MemberInfo GetDataMediator(TKey key) {
+            if(TryGetDataMediator(key, out var dataMember)) {
                 return dataMember;
             } else {
                 throw new MissingMemberException();

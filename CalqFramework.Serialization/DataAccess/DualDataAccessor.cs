@@ -97,11 +97,11 @@
         }
     }
 
-    public class DualDataAccessor<TKey, TValue, TMediaryKey> : IDataAccessor<TKey, TValue, TMediaryKey> {
-        public IDataAccessor<TKey, TValue, TMediaryKey> PrimaryAccessor { get; }
-        public IDataAccessor<TKey, TValue, TMediaryKey> SecondaryAccessor { get; }
+    public class DualDataAccessor<TKey, TValue, TDataMediator> : IDataAccessor<TKey, TValue, TDataMediator> {
+        public IDataAccessor<TKey, TValue, TDataMediator> PrimaryAccessor { get; }
+        public IDataAccessor<TKey, TValue, TDataMediator> SecondaryAccessor { get; }
 
-        public DualDataAccessor(IDataAccessor<TKey, TValue, TMediaryKey> primaryAccessor, IDataAccessor<TKey, TValue, TMediaryKey> secondaryAccessor) {
+        public DualDataAccessor(IDataAccessor<TKey, TValue, TDataMediator> primaryAccessor, IDataAccessor<TKey, TValue, TDataMediator> secondaryAccessor) {
             PrimaryAccessor = primaryAccessor;
             SecondaryAccessor = secondaryAccessor;
         }
@@ -172,68 +172,68 @@
             }
         }
 
-        public Type GetType(TMediaryKey key) {
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.GetType(key);
+        public Type GetType(TDataMediator dataMediator) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                return PrimaryAccessor.GetType(dataMediator);
             } else {
-                return SecondaryAccessor.GetType(key);
+                return SecondaryAccessor.GetType(dataMediator);
             }
         }
 
-        public object? GetValue(TMediaryKey key) {
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.GetValue(key);
+        public object? GetValue(TDataMediator dataMediator) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                return PrimaryAccessor.GetValue(dataMediator);
             } else {
-                return SecondaryAccessor.GetValue(key);
+                return SecondaryAccessor.GetValue(dataMediator);
             }
         }
 
-        public object GetOrInitializeValue(TMediaryKey key) {
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.GetOrInitializeValue(key);
+        public object GetOrInitializeValue(TDataMediator dataMediator) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                return PrimaryAccessor.GetOrInitializeValue(dataMediator);
             } else {
-                return SecondaryAccessor.GetOrInitializeValue(key);
+                return SecondaryAccessor.GetOrInitializeValue(dataMediator);
             }
         }
 
-        public void SetValue(TMediaryKey key, TValue? value) {
-            if (PrimaryAccessor.Contains(key)) {
-                PrimaryAccessor.SetValue(key, value);
+        public void SetValue(TDataMediator dataMediator, TValue? value) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                PrimaryAccessor.SetValue(dataMediator, value);
             } else {
-                SecondaryAccessor.SetValue(key, value);
+                SecondaryAccessor.SetValue(dataMediator, value);
             }
         }
 
-        public bool Contains(TMediaryKey key) {
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.Contains(key);
+        public bool Contains(TDataMediator dataMediator) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                return PrimaryAccessor.Contains(dataMediator);
             } else {
-                return SecondaryAccessor.Contains(key);
+                return SecondaryAccessor.Contains(dataMediator);
             }
         }
 
-        public bool SetOrAddValue(TMediaryKey key, TValue? value) {
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.SetOrAddValue(key, value);
+        public bool SetOrAddValue(TDataMediator dataMediator, TValue? value) {
+            if (PrimaryAccessor.Contains(dataMediator)) {
+                return PrimaryAccessor.SetOrAddValue(dataMediator, value);
             } else {
-                return SecondaryAccessor.SetOrAddValue(key, value);
+                return SecondaryAccessor.SetOrAddValue(dataMediator, value);
             }
         }
 
-        public bool TryGetMediaryKey(TKey key, out TMediaryKey result) {
-            PrimaryAccessor.TryGetMediaryKey(key, out result);
+        public bool TryGetDataMediator(TKey key, out TDataMediator result) {
+            PrimaryAccessor.TryGetDataMediator(key, out result);
             if (result != null) {
                 return true;
             }
-            SecondaryAccessor.TryGetMediaryKey(key, out result);
+            SecondaryAccessor.TryGetDataMediator(key, out result);
             if (result != null) {
                 return true;
             }
             return false;
         }
 
-        public TMediaryKey GetMediaryKey(TKey key) {
-            return PrimaryAccessor.GetMediaryKey(key) ?? SecondaryAccessor.GetMediaryKey(key); ;
+        public TDataMediator GetDataMediator(TKey key) {
+            return PrimaryAccessor.GetDataMediator(key) ?? SecondaryAccessor.GetDataMediator(key); ;
         }
     }
 }

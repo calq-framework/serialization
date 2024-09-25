@@ -13,5 +13,5 @@
         public bool SetOrAddValue(TKey key, TValue? value);
     }
 
-    public interface IDataAccessor<TKey, TValue, TMediaryKey> : IMediaryKeyResolver<TKey, TMediaryKey>, IDataAccessor<TKey, TValue>, IDirectDataAccessor<TMediaryKey, TValue> { }
+    public interface IDataAccessor<TKey, TValue, TDataMediator> : IDataMediatorResolver<TKey, TDataMediator>, IDataAccessor<TKey, TValue>, IDirectDataAccessor<TDataMediator, TValue> { }
 }
