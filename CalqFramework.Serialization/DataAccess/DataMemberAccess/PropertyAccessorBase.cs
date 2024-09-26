@@ -7,10 +7,6 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         public PropertyAccessorBase(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
 
-        public bool Contains(MemberInfo dataMediator) {
-            return dataMediator is PropertyInfo;
-        }
-
         public Type GetType(MemberInfo dataMediator) {
             return ((PropertyInfo)dataMediator).PropertyType;
         }

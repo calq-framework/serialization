@@ -4,8 +4,6 @@
 
         string DataMediatorToString(TDataMediator dataMediator);
 
-        bool Contains(TDataMediator dataMediator);
-
         Type GetType(TDataMediator dataMediator);
 
         TValue GetValue(TDataMediator dataMediator);

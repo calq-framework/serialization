@@ -13,9 +13,13 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             ParentType = obj.GetType();
         }
 
-        public bool Contains(TKey key) {
+        public bool ContainsKey(TKey key) {
             var result = GetClassMember(key);
             return result != null;
+        }
+
+        public bool ContainsDataMediator(MemberInfo dataMediator) {
+            return dataMediator.DeclaringType == ParentType;
         }
 
         public bool TryGetDataMediator(TKey key, [MaybeNullWhen(false)] out MemberInfo result) {

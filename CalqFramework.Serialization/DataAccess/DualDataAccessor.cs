@@ -13,7 +13,7 @@ namespace CalqFramework.Serialization.DataAccess {
         }
 
         private void AssertNoCollision(TKey key) {
-            if (PrimaryAccessor.Contains(key) && SecondaryAccessor.Contains(key)) {
+            if (PrimaryAccessor.ContainsKey(key) && SecondaryAccessor.ContainsKey(key)) {
                 throw new Exception("collision");
             }
         }
@@ -22,7 +22,7 @@ namespace CalqFramework.Serialization.DataAccess {
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key))
+            if (PrimaryAccessor.ContainsKey(key))
             {
                 return PrimaryAccessor.GetType(key);
             }
@@ -36,7 +36,7 @@ namespace CalqFramework.Serialization.DataAccess {
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key))
+            if (PrimaryAccessor.ContainsKey(key))
             {
                 return PrimaryAccessor.GetValue(key);
             }
@@ -50,7 +50,7 @@ namespace CalqFramework.Serialization.DataAccess {
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key))
+            if (PrimaryAccessor.ContainsKey(key))
             {
                 return PrimaryAccessor.GetValueOrInitialize(key);
             }
@@ -64,7 +64,7 @@ namespace CalqFramework.Serialization.DataAccess {
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key))
+            if (PrimaryAccessor.ContainsKey(key))
             {
                 PrimaryAccessor.SetValue(key, value);
             }
@@ -74,17 +74,17 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public bool Contains(TKey key)
+        public bool ContainsKey(TKey key)
         {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key))
+            if (PrimaryAccessor.ContainsKey(key))
             {
-                return PrimaryAccessor.Contains(key);
+                return PrimaryAccessor.ContainsKey(key);
             }
             else
             {
-                return SecondaryAccessor.Contains(key);
+                return SecondaryAccessor.ContainsKey(key);
             }
         }
     }
@@ -101,7 +101,7 @@ namespace CalqFramework.Serialization.DataAccess {
         }
 
         private void AssertNoCollision(TKey key) {
-            if (PrimaryAccessor.Contains(key) && SecondaryAccessor.Contains(key)) {
+            if (PrimaryAccessor.ContainsKey(key) && SecondaryAccessor.ContainsKey(key)) {
                 throw new Exception("collision");
             }
         }
@@ -109,7 +109,7 @@ namespace CalqFramework.Serialization.DataAccess {
         public Type GetType(TKey key) {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key)) {
+            if (PrimaryAccessor.ContainsKey(key)) {
                 return PrimaryAccessor.GetType(key);
             } else {
                 return SecondaryAccessor.GetType(key);
@@ -119,7 +119,7 @@ namespace CalqFramework.Serialization.DataAccess {
         public TValue GetValue(TKey key) {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key)) {
+            if (PrimaryAccessor.ContainsKey(key)) {
                 return PrimaryAccessor.GetValue(key);
             } else {
                 return SecondaryAccessor.GetValue(key);
@@ -129,7 +129,7 @@ namespace CalqFramework.Serialization.DataAccess {
         public TValue GetValueOrInitialize(TKey key) {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key)) {
+            if (PrimaryAccessor.ContainsKey(key)) {
                 return PrimaryAccessor.GetValueOrInitialize(key);
             } else {
                 return SecondaryAccessor.GetValueOrInitialize(key);
@@ -139,25 +139,25 @@ namespace CalqFramework.Serialization.DataAccess {
         public void SetValue(TKey key, TValue value) {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key)) {
+            if (PrimaryAccessor.ContainsKey(key)) {
                 PrimaryAccessor.SetValue(key, value);
             } else {
                 SecondaryAccessor.SetValue(key, value);
             }
         }
 
-        public bool Contains(TKey key) {
+        public bool ContainsKey(TKey key) {
             AssertNoCollision(key);
 
-            if (PrimaryAccessor.Contains(key)) {
-                return PrimaryAccessor.Contains(key);
+            if (PrimaryAccessor.ContainsKey(key)) {
+                return PrimaryAccessor.ContainsKey(key);
             } else {
-                return SecondaryAccessor.Contains(key);
+                return SecondaryAccessor.ContainsKey(key);
             }
         }
 
         public Type GetType(TDataMediator dataMediator) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
+            if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
                 return PrimaryAccessor.GetType(dataMediator);
             } else {
                 return SecondaryAccessor.GetType(dataMediator);
@@ -165,7 +165,7 @@ namespace CalqFramework.Serialization.DataAccess {
         }
 
         public TValue GetValue(TDataMediator dataMediator) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
+            if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
                 return PrimaryAccessor.GetValue(dataMediator);
             } else {
                 return SecondaryAccessor.GetValue(dataMediator);
@@ -173,7 +173,7 @@ namespace CalqFramework.Serialization.DataAccess {
         }
 
         public TValue GetValueOrInitialize(TDataMediator dataMediator) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
+            if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
                 return PrimaryAccessor.GetValueOrInitialize(dataMediator);
             } else {
                 return SecondaryAccessor.GetValueOrInitialize(dataMediator);
@@ -181,18 +181,18 @@ namespace CalqFramework.Serialization.DataAccess {
         }
 
         public void SetValue(TDataMediator dataMediator, TValue value) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
+            if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
                 PrimaryAccessor.SetValue(dataMediator, value);
             } else {
                 SecondaryAccessor.SetValue(dataMediator, value);
             }
         }
 
-        public bool Contains(TDataMediator dataMediator) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
-                return PrimaryAccessor.Contains(dataMediator);
+        public bool ContainsDataMediator(TDataMediator dataMediator) {
+            if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
+                return PrimaryAccessor.ContainsDataMediator(dataMediator);
             } else {
-                return SecondaryAccessor.Contains(dataMediator);
+                return SecondaryAccessor.ContainsDataMediator(dataMediator);
             }
         }
 
@@ -209,7 +209,7 @@ namespace CalqFramework.Serialization.DataAccess {
         }
 
         public string DataMediatorToString(TDataMediator dataMediator) {
-            if (PrimaryAccessor.Contains(dataMediator)) {
+            if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
                 return PrimaryAccessor.DataMediatorToString(dataMediator);
             } else {
                 return SecondaryAccessor.DataMediatorToString(dataMediator);

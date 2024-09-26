@@ -132,7 +132,7 @@ namespace CalqFramework.Cli.DataAccess {
             throw new MissingMemberException();
         }
 
-        public  bool Contains(string key)
+        public  bool ContainsKey(string key)
         {
             return TryGetParamIndex(key, out var _);
         }
