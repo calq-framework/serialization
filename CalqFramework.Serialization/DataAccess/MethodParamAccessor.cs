@@ -10,6 +10,23 @@ namespace CalqFramework.Cli.DataAccess {
         public HashSet<ParameterInfo> AssignedParameters { get; }
         public MethodInfo Method { get; }
 
+        public object? this[string key] {
+            get {
+                if (TryGetParamIndex(key, out var index)) {
+                    return ParamValues[index];
+                }
+                throw new MissingMemberException();
+            }
+            set {
+                if (TryGetParamIndex(key, out var index)) {
+                    ParamValues[index] = value;
+                    AssignedParameters.Add(Parameters[index]);
+                    return;
+                }
+                throw new MissingMemberException();
+            }
+        }
+
         public MethodParamAccessor(MethodInfo method)
         {
             Method = method;
@@ -114,20 +131,11 @@ namespace CalqFramework.Cli.DataAccess {
             throw new MissingMemberException();
         }
 
-        public  Type GetType(string key)
+        public  Type GetDataType(string key)
         {
             if (TryGetParamIndex(key, out var index))
             {
                 return Parameters[index].ParameterType;
-            }
-            throw new MissingMemberException();
-        }
-
-        public  object? GetValue(string key)
-        {
-            if (TryGetParamIndex(key, out var index))
-            {
-                return ParamValues[index];
             }
             throw new MissingMemberException();
         }
@@ -137,24 +145,13 @@ namespace CalqFramework.Cli.DataAccess {
             return TryGetParamIndex(key, out var _);
         }
 
-        public  void SetValue(string key, object? value)
-        {
-            if (TryGetParamIndex(key, out var index))
-            {
-                ParamValues[index] = value;
-                AssignedParameters.Add(Parameters[index]);
-                return;
-            }
-            throw new MissingMemberException();
-        }
-
         public  bool SetOrAddValue(string key, object? value)
         {
-            var type = GetType(key);
+            var type = GetDataType(key);
             var isCollection = type.GetInterface(nameof(ICollection)) != null;
             if (isCollection == false)
             {
-                SetValue(key, value);
+                this[key] = value;
                 return false;
             }
             else

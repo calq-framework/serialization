@@ -94,7 +94,7 @@ namespace CalqFramework.Serialization.Json
                     }
                     if (currentInstance is not ICollection)
                     {
-                        DataMemberAccessor.SetValue(propertyName, value);
+                        DataMemberAccessor[propertyName] = value;
                     }
                     else
                     {

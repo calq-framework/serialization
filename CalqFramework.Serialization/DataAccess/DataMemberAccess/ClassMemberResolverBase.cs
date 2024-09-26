@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     public abstract class ClassMemberResolverBase<TKey, TValue> : IDataMediatorResolver<TKey, MemberInfo> {
