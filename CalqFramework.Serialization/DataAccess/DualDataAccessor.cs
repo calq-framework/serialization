@@ -32,7 +32,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public object? GetValue(TKey key)
+        public TValue? GetValue(TKey key)
         {
             AssertNoCollision(key);
 
@@ -46,7 +46,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public object GetOrInitializeValue(TKey key)
+        public TValue GetOrInitializeValue(TKey key)
         {
             AssertNoCollision(key);
 
@@ -116,7 +116,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public object? GetValue(TKey key) {
+        public TValue? GetValue(TKey key) {
             AssertNoCollision(key);
 
             if (PrimaryAccessor.Contains(key)) {
@@ -126,7 +126,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public object GetOrInitializeValue(TKey key) {
+        public TValue GetOrInitializeValue(TKey key) {
             AssertNoCollision(key);
 
             if (PrimaryAccessor.Contains(key)) {
@@ -164,7 +164,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public object? GetValue(TDataMediator dataMediator) {
+        public TValue? GetValue(TDataMediator dataMediator) {
             if (PrimaryAccessor.Contains(dataMediator)) {
                 return PrimaryAccessor.GetValue(dataMediator);
             } else {
@@ -172,7 +172,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public object GetOrInitializeValue(TDataMediator dataMediator) {
+        public TValue GetOrInitializeValue(TDataMediator dataMediator) {
             if (PrimaryAccessor.Contains(dataMediator)) {
                 return PrimaryAccessor.GetOrInitializeValue(dataMediator);
             } else {

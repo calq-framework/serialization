@@ -10,9 +10,9 @@ namespace CalqFramework.Serialization.DataAccess {
 
         Type GetType(TDataMediator dataMediator);
 
-        object? GetValue(TDataMediator dataMediator);
+        TValue? GetValue(TDataMediator dataMediator);
 
-        object GetOrInitializeValue(TDataMediator dataMediator);
+        TValue GetOrInitializeValue(TDataMediator dataMediator);
 
         void SetValue(TDataMediator dataMediator, TValue? value);
     }

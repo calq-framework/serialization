@@ -6,9 +6,9 @@ namespace CalqFramework.Serialization.DataAccess {
 
         Type GetType(TKey key);
 
-        object? GetValue(TKey key);
+        TValue? GetValue(TKey key);
 
-        object GetOrInitializeValue(TKey key);
+        TValue GetOrInitializeValue(TKey key);
 
         void SetValue(TKey key, TValue? value);
     }
