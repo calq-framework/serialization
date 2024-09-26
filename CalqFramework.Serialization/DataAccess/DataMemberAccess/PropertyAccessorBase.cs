@@ -19,7 +19,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             return ((PropertyInfo)dataMediator).GetValue(ParentObject);
         }
 
-        public object GetOrInitializeValue(MemberInfo dataMediator) {
+        public object GetValueOrInitialize(MemberInfo dataMediator) {
             var value = ((PropertyInfo)dataMediator).GetValue(ParentObject) ??
                    Activator.CreateInstance(((PropertyInfo)dataMediator).PropertyType) ??
                    Activator.CreateInstance(Nullable.GetUnderlyingType(((PropertyInfo)dataMediator).PropertyType)!)!;
@@ -31,9 +31,9 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             ((PropertyInfo)dataMediator).SetValue(ParentObject, value);
         }
 
-        public object GetOrInitializeValue(TKey key) {
+        public object GetValueOrInitialize(TKey key) {
             var dataMediator = GetDataMediator(key);
-            return GetOrInitializeValue(dataMediator);
+            return GetValueOrInitialize(dataMediator);
         }
 
         public Type GetType(TKey key) {
@@ -43,7 +43,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
 
         public object? GetValue(TKey key) {
             var dataMediator = GetDataMediator(key);
-            return GetOrInitializeValue(dataMediator);
+            return GetValueOrInitialize(dataMediator);
         }
 
         public void SetValue(TKey key, object? value) {

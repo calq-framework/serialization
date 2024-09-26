@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace CalqFramework.Serialization.DataAccess {
+﻿namespace CalqFramework.Serialization.DataAccess {
     public interface IDirectDataAccessor<TDataMediator, TValue> {
         IEnumerable<TDataMediator> DataMediators { get; }
 
@@ -10,10 +8,10 @@ namespace CalqFramework.Serialization.DataAccess {
 
         Type GetType(TDataMediator dataMediator);
 
-        TValue? GetValue(TDataMediator dataMediator);
+        TValue GetValue(TDataMediator dataMediator);
 
-        TValue GetOrInitializeValue(TDataMediator dataMediator);
+        TValue GetValueOrInitialize(TDataMediator dataMediator);
 
-        void SetValue(TDataMediator dataMediator, TValue? value);
+        void SetValue(TDataMediator dataMediator, TValue value);
     }
 }

@@ -101,7 +101,7 @@ namespace CalqFramework.Cli.DataAccess {
             AssignedParameters.Add(Parameters[index]);
         }
 
-        public  object GetOrInitializeValue(string key)
+        public  object GetValueOrInitialize(string key)
         {
             if (TryGetParamIndex(key, out var index))
             {
@@ -159,7 +159,7 @@ namespace CalqFramework.Cli.DataAccess {
             }
             else
             {
-                var collectionObj = (GetOrInitializeValue(key) as ICollection)!;
+                var collectionObj = (GetValueOrInitialize(key) as ICollection)!;
                 //AddValue(collectionObj, value);
                 TryGetParamIndex(key, out var index);
                 AssignedParameters.Add(Parameters[index]);

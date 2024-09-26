@@ -69,7 +69,7 @@ namespace CalqFramework.Serialization.Json
                             instanceStack.Push(currentInstance);
                             if (currentInstance is not ICollection)
                             {
-                                currentInstance = DataMemberAccessor.GetOrInitializeValue(propertyName);
+                                currentInstance = DataMemberAccessor.GetValueOrInitialize(propertyName);
                             }
                             else
                             {
@@ -81,7 +81,7 @@ namespace CalqFramework.Serialization.Json
                             instanceStack.Push(currentInstance);
                             if (currentInstance is not ICollection)
                             {
-                                currentInstance = DataMemberAccessor.GetOrInitializeValue(propertyName);
+                                currentInstance = DataMemberAccessor.GetValueOrInitialize(propertyName);
                             }
                             else
                             {
