@@ -5,8 +5,8 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         public PropertyAccessor(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
 
-        protected override MemberInfo? GetDataMemberCore(string key) {
-            return Type.GetProperty(key, BindingAttr);
+        protected override MemberInfo? GetClassMember(string key) {
+            return ParentType.GetProperty(key, BindingAttr);
         }
     }
 }

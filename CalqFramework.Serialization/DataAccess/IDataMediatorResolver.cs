@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace CalqFramework.Serialization.DataAccess {
     public interface IDataMediatorResolver<TKey, TDataMediator> {
-        bool TryGetDataMediator(TKey key, out TDataMediator result);
+        bool TryGetDataMediator(TKey key, [MaybeNullWhen(false)] out TDataMediator result);
         TDataMediator GetDataMediator(TKey key);
     }
 }

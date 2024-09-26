@@ -2,7 +2,7 @@
 
 namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     public abstract class PropertyAccessorBase<TKey> : ClassMemberResolverBase<TKey, object?>, IDataAccessor<TKey, object?, MemberInfo> {
-        public IEnumerable<MemberInfo> DataMediators => Type.GetProperties();
+        public IEnumerable<MemberInfo> DataMediators => ParentType.GetProperties();
 
         public PropertyAccessorBase(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
@@ -16,19 +16,19 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         }
 
         public object? GetValue(MemberInfo dataMediator) {
-            return ((PropertyInfo)dataMediator).GetValue(Obj);
+            return ((PropertyInfo)dataMediator).GetValue(ParentObject);
         }
 
         public object GetOrInitializeValue(MemberInfo dataMediator) {
-            var value = ((PropertyInfo)dataMediator).GetValue(Obj) ??
+            var value = ((PropertyInfo)dataMediator).GetValue(ParentObject) ??
                    Activator.CreateInstance(((PropertyInfo)dataMediator).PropertyType) ??
                    Activator.CreateInstance(Nullable.GetUnderlyingType(((PropertyInfo)dataMediator).PropertyType)!)!;
-            ((PropertyInfo)dataMediator).SetValue(Obj, value);
+            ((PropertyInfo)dataMediator).SetValue(ParentObject, value);
             return value;
         }
 
         public void SetValue(MemberInfo dataMediator, object? value) {
-            ((PropertyInfo)dataMediator).SetValue(Obj, value);
+            ((PropertyInfo)dataMediator).SetValue(ParentObject, value);
         }
 
         public object GetOrInitializeValue(TKey key) {

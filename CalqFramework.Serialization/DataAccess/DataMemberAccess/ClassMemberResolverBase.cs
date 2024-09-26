@@ -1,44 +1,32 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace CalqFramework.Serialization.DataAccess.DataMemberAccess
-{
+namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     public abstract class ClassMemberResolverBase<TKey, TValue> : IDataMediatorResolver<TKey, MemberInfo> {
-        public object Obj { get; }
-        public Type Type { get; }
-        public BindingFlags BindingAttr { get; }
+        protected object ParentObject { get; }
+        protected Type ParentType { get; }
+        protected BindingFlags BindingAttr { get; }
 
         public ClassMemberResolverBase(object obj, BindingFlags bindingAttr) {
-            Obj = obj;
+            ParentObject = obj;
             BindingAttr = bindingAttr;
-            Type = obj.GetType();
-        }
-
-        public bool TryGetDataMediator(TKey key, out MemberInfo result) {
-            var dataMember = GetDataMemberCore(key);
-            if (dataMember != null) {
-                result = dataMember;
-                return true;
-            }
-            result = null!;
-            return false;
-        }
-
-        public MemberInfo GetDataMediator(TKey key) {
-            if(TryGetDataMediator(key, out var dataMember)) {
-                return dataMember;
-            } else {
-                throw new MissingMemberException();
-            }
+            ParentType = obj.GetType();
         }
 
         public bool Contains(TKey key) {
-            var dataMember = GetDataMemberCore(key);
-
-            return dataMember == null ? false : true;
+            var result = GetClassMember(key);
+            return result != null;
         }
 
-        protected abstract MemberInfo? GetDataMemberCore(TKey key);
+        public bool TryGetDataMediator(TKey key, [MaybeNullWhen(false)] out MemberInfo result) {
+            result = GetClassMember(key);
+            return result != null;
+        }
+
+        public MemberInfo GetDataMediator(TKey key) {
+            return GetClassMember(key) ?? throw new MissingMemberException($"Missing {key} in {ParentType}.");
+        }
+
+        protected abstract MemberInfo? GetClassMember(TKey key);
     }
 }

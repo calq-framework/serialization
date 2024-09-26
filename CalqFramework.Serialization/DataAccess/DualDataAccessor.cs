@@ -1,4 +1,6 @@
-﻿namespace CalqFramework.Serialization.DataAccess {
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace CalqFramework.Serialization.DataAccess {
     public class DualDataAccessor<TKey, TValue> : IDataAccessor<TKey, TValue>
     {
         public IDataAccessor<TKey, TValue> PrimaryAccessor { get; }
@@ -194,16 +196,12 @@
             }
         }
 
-        public bool TryGetDataMediator(TKey key, out TDataMediator result) {
+        public bool TryGetDataMediator(TKey key, [MaybeNullWhen(false)] out TDataMediator result) {
             PrimaryAccessor.TryGetDataMediator(key, out result);
-            if (result != null) {
-                return true;
+            if (result == null) {
+                SecondaryAccessor.TryGetDataMediator(key, out result);
             }
-            SecondaryAccessor.TryGetDataMediator(key, out result);
-            if (result != null) {
-                return true;
-            }
-            return false;
+            return result != null;
         }
 
         public TDataMediator GetDataMediator(TKey key) {
