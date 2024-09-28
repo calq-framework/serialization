@@ -1,14 +1,19 @@
 ﻿using CalqFramework.Serialization.DataAccess;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace CalqFramework.Cli.DataAccess {
-    internal class MethodParamAccessor : IDataAccessor<string, object?>
+    internal class MethodParamAccessor : IDataAccessor<string, object?, ParameterInfo>
     {
-        public ParameterInfo[] Parameters { get; }
+        private ParameterInfo[] Parameters { get; }
         private object?[] ParamValues { get; }
-        public HashSet<ParameterInfo> AssignedParameters { get; }
-        public MethodInfo Method { get; }
+        private HashSet<ParameterInfo> AssignedParameters { get; }
+        private MethodInfo Method { get; }
+
+        public IEnumerable<ParameterInfo> DataMediators => Parameters;
+
+        public object? this[ParameterInfo dataMediator] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public object? this[string key] {
             get {
@@ -33,10 +38,6 @@ namespace CalqFramework.Cli.DataAccess {
             Parameters = Method.GetParameters();
             ParamValues = new object?[Parameters.Length];
             AssignedParameters = new HashSet<ParameterInfo>();
-        }
-
-        public string ParameterToString(ParameterInfo parameter, BindingFlags bindingAttr) {
-            return parameter.Name;
         }
 
         public object? Invoke(object? obj)
@@ -162,6 +163,36 @@ namespace CalqFramework.Cli.DataAccess {
                 AssignedParameters.Add(Parameters[index]);
                 return true;
             }
+        }
+
+        public bool TryGetDataMediator(string key, [MaybeNullWhen(false)] out ParameterInfo result) {
+            var found = TryGetParamIndex(key, out int index);
+            if (found) {
+                result = Parameters[index];
+            } else {
+                result = null;
+            }
+            return found;
+        }
+
+        public ParameterInfo GetDataMediator(string key) {
+            throw new NotImplementedException();
+        }
+
+        public bool ContainsDataMediator(ParameterInfo key) {
+            throw new NotImplementedException();
+        }
+
+        public string DataMediatorToString(ParameterInfo dataMediator) {
+            return dataMediator.Name;
+        }
+
+        public Type GetDataType(ParameterInfo dataMediator) {
+            throw new NotImplementedException();
+        }
+
+        public object? GetValueOrInitialize(ParameterInfo dataMediator) {
+            throw new NotImplementedException();
         }
     }
 }
