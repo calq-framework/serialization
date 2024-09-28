@@ -24,7 +24,11 @@ namespace CalqFramework.Serialization.Json
             void ReadObject(ref Utf8JsonReader reader)
             {
                 var dataMemberAccessor = DataMemberAccessorFactory.CreateDataMemberAccessor(currentInstance);
-                CollectionAccessor? collectionAccessor = null;
+                CollectionAccessor? collectionAccessor = null!;
+                if (currentInstance is ICollection) {
+                    collectionAccessor = new CollectionAccessor((ICollection)currentInstance);
+                }
+
                 while (true)
                 {
                     reader.Read();
@@ -67,27 +71,25 @@ namespace CalqFramework.Serialization.Json
                             value = null;
                             break;
                         case JsonTokenType.StartObject:
-                            instanceStack.Push(currentInstance);
+                            instanceStack.Push(currentInstance!);
                             if (currentInstance is not ICollection)
                             {
                                 currentInstance = dataMemberAccessor.GetValueOrInitialize(propertyName);
                             }
                             else
                             {
-                                collectionAccessor = new CollectionAccessor((ICollection)currentInstance);
                                 currentInstance = collectionAccessor.GetValueOrInitialize(propertyName);
                             }
                             ReadObject(ref reader);
                             continue;
                         case JsonTokenType.StartArray:
-                            instanceStack.Push(currentInstance);
+                            instanceStack.Push(currentInstance!);
                             if (currentInstance is not ICollection)
                             {
                                 currentInstance = dataMemberAccessor.GetValueOrInitialize(propertyName);
                             }
                             else
                             {
-                                collectionAccessor = new CollectionAccessor((ICollection)currentInstance);
                                 currentInstance = collectionAccessor.GetValueOrInitialize(propertyName);
                             }
                             ReadArray(ref reader);
@@ -101,14 +103,14 @@ namespace CalqFramework.Serialization.Json
                     }
                     else
                     {
-                        collectionAccessor![propertyName] = value;
+                        collectionAccessor[propertyName] = value;
                     }
                 }
             }
 
             void ReadArray(ref Utf8JsonReader reader)
             {
-                var collectionAccessor = new CollectionAccessor((ICollection)currentInstance);
+                var collectionAccessor = new CollectionAccessor((ICollection)currentInstance!);
                 while (true)
                 {
                     reader.Read();
