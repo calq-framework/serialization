@@ -2,50 +2,73 @@
 using CalqFramework.Serialization.Text;
 
 namespace CalqFramework.Serialization.DataAccess;
-public static class CollectionAccessor
+
+// TODO consider CollectionAccessorFactory and accessor per collection type
+public class CollectionAccessor : IDataAccessor<string, object?>
 {
-    public static object? GetValue(ICollection collection, string key)
-    {
-        return collection switch
-        {
-            Array array => 
-            array.GetValue(int.Parse(key)),
-            IList list => 
-            list[int.Parse(key)],
-            IDictionary dictionary => 
-            dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])],
-            _ => throw new Exception("unsupported collection")
-        };
+    protected object ParentCollection { get; }
+
+    public object? this[string key] {
+        get {
+            return ParentCollection switch {
+                Array array =>
+                    array.GetValue(int.Parse(key)),
+                IList list =>
+                    list[int.Parse(key)],
+                IDictionary dictionary =>
+                    dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])],
+                _ => throw new Exception("unsupported collection")
+            };
+
+        } set {
+            switch (ParentCollection) {
+                case Array array:
+                    array.SetValue(value, int.Parse(key));
+                    break;
+                case IList list:
+                    list[int.Parse(key)] = value;
+                    break;
+                case IDictionary dictionary:
+                    dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])] = value;
+                    break;
+                default:
+                    throw new Exception("unsupported collection");
+            }
+        }
+    }
+   
+    public CollectionAccessor(ICollection collection) {
+        ParentCollection = collection;
     }
 
-    public static object? GetOrInitializeValue(ICollection collection, string key)
-    {
-        switch (collection)
-        {
+
+    public Type GetDataType(string key) {
+        return this[key]!.GetType();
+    }
+
+    public object? GetValueOrInitialize(string key) {
+        switch (ParentCollection) {
             case Array array:
                 var arrayElement = array.GetValue(int.Parse(key));
-                if (arrayElement == null)
-                {
-                    arrayElement = Activator.CreateInstance(collection.GetType().GetElementType()!) ??
-                        Activator.CreateInstance(Nullable.GetUnderlyingType(collection.GetType().GetGenericArguments()[0])!)!;
+                if (arrayElement == null) {
+                    arrayElement = Activator.CreateInstance(ParentCollection.GetType().GetElementType()!) ??
+                        Activator.CreateInstance(Nullable.GetUnderlyingType(ParentCollection.GetType().GetGenericArguments()[0])!)!;
                     array.SetValue(arrayElement, int.Parse(key));
                 }
                 return arrayElement;
             case IList list:
                 var listElement = list[int.Parse(key)];
-                if (listElement == null)
-                {
-                    listElement = Activator.CreateInstance(collection.GetType().GetGenericArguments()[0]!) ??
-                        Activator.CreateInstance(Nullable.GetUnderlyingType(collection.GetType().GetGenericArguments()[0])!)!;
+                if (listElement == null) {
+                    listElement = Activator.CreateInstance(ParentCollection.GetType().GetGenericArguments()[0]!) ??
+                        Activator.CreateInstance(Nullable.GetUnderlyingType(ParentCollection.GetType().GetGenericArguments()[0])!)!;
                     list[int.Parse(key)] = listElement;
                 }
                 return listElement;
             case IDictionary dictionary:
                 var dictionaryElement = dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])];
-                if (dictionaryElement == null)
-                {
-                    dictionaryElement = Activator.CreateInstance(collection.GetType().GetGenericArguments()[1]!) ??
-                        Activator.CreateInstance(Nullable.GetUnderlyingType(collection.GetType().GetGenericArguments()[0])!)!;
+                if (dictionaryElement == null) {
+                    dictionaryElement = Activator.CreateInstance(ParentCollection.GetType().GetGenericArguments()[1]!) ??
+                        Activator.CreateInstance(Nullable.GetUnderlyingType(ParentCollection.GetType().GetGenericArguments()[0])!)!;
                     dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])] = dictionaryElement;
                 }
                 return dictionaryElement;
@@ -54,28 +77,13 @@ public static class CollectionAccessor
         }
     }
 
-    public static void SetValue(ICollection collection, string key, object? value)
-    {
-        switch (collection)
-        {
-            case Array array:
-                array.SetValue(value, int.Parse(key));
-                break;
-            case IList list:
-                list[int.Parse(key)] = value;
-                break;
-            case IDictionary dictionary:
-                dictionary[ValueParser.ParseValue(key, dictionary.GetType().GetGenericArguments()[0])] = value;
-                break;
-            default:
-                throw new Exception("unsupported collection");
-        }
+    // FIXME
+    public bool ContainsKey(string key) {
+        throw new NotImplementedException();
     }
 
-    public static void AddValue(ICollection collection, object? value)
-    {
-        switch (collection)
-        {
+    public void AddValue(object? value) {
+        switch (ParentCollection) {
             case IList list:
                 list.Add(value);
                 break;
@@ -83,12 +91,11 @@ public static class CollectionAccessor
                 throw new Exception("unsupported collection");
         }
     }
-
-    public static object AddValue(ICollection collection) {
-        switch (collection) {
+    public object AddValue() {
+        switch (ParentCollection) {
             case IList list:
-                var value = Activator.CreateInstance(collection.GetType().GetGenericArguments()[0]) ??
-                   Activator.CreateInstance(Nullable.GetUnderlyingType(collection.GetType().GetGenericArguments()[0])!)!;
+                var value = Activator.CreateInstance(ParentCollection.GetType().GetGenericArguments()[0]) ??
+                   Activator.CreateInstance(Nullable.GetUnderlyingType(ParentCollection.GetType().GetGenericArguments()[0])!)!;
                 list.Add(value);
                 return value;
             default:
@@ -96,10 +103,8 @@ public static class CollectionAccessor
         }
     }
 
-    public static void RemoveValue(ICollection collection, string key)
-    {
-        switch (collection)
-        {
+    public void RemoveValue(string key) {
+        switch (ParentCollection) {
             case IList list:
                 list.RemoveAt(int.Parse(key));
                 break;
