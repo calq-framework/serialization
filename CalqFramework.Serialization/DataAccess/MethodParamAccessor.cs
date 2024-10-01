@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace CalqFramework.Cli.DataAccess {
-    internal class MethodParamAccessor : IDataAccessor<string, object?, ParameterInfo>
+    public class MethodParamAccessor : IDataAccessor<string, object?, ParameterInfo>
     {
         private ParameterInfo[] Parameters { get; }
         private object?[] ParamValues { get; }
