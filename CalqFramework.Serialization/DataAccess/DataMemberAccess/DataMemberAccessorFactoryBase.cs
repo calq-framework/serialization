@@ -10,7 +10,7 @@ public abstract class DataMemberAccessorFactoryBase<TKey, TValue> {
         DataMemberAccessorOptions = dataMemberAccessorOptions;
     }
 
-    public virtual IDataAccessor<TKey, TValue> CreateDataMemberAccessor(object obj)
+    public virtual IDataAccessor<TKey, TValue, MemberInfo> CreateDataMemberAccessor(object obj)
     {
         if (DataMemberAccessorOptions.AccessFields && DataMemberAccessorOptions.AccessProperties)
         {
@@ -30,10 +30,10 @@ public abstract class DataMemberAccessorFactoryBase<TKey, TValue> {
         }
     }
 
-    protected IDataAccessor<TKey, TValue> CreateFieldAndPropertyAccessor(object obj)
+    protected IDataAccessor<TKey, TValue, MemberInfo> CreateFieldAndPropertyAccessor(object obj)
     {
-        return new DualDataAccessor<TKey, TValue>(CreateFieldAccessor(obj), CreatePropertyAccessor(obj));
+        return new DualDataAccessor<TKey, TValue, MemberInfo>(CreateFieldAccessor(obj), CreatePropertyAccessor(obj));
     }
-    protected abstract IDataAccessor<TKey, TValue> CreateFieldAccessor(object obj);
-    protected abstract IDataAccessor<TKey, TValue> CreatePropertyAccessor(object obj);
+    protected abstract IDataAccessor<TKey, TValue, MemberInfo> CreateFieldAccessor(object obj);
+    protected abstract IDataAccessor<TKey, TValue, MemberInfo> CreatePropertyAccessor(object obj);
 }

@@ -1,13 +1,13 @@
 ﻿namespace CalqFramework.Serialization.DataAccess {
     public interface IDirectDataAccessor<TDataMediator, TValue> {
-        protected TValue this[TDataMediator dataMediator] { get; set; }
+        protected internal TValue this[TDataMediator dataMediator] { get; set; }
 
-        protected IEnumerable<TDataMediator> DataMediators { get; }
+        protected internal IEnumerable<TDataMediator> DataMediators { get; }
 
-        protected string DataMediatorToString(TDataMediator dataMediator);
+        protected internal string DataMediatorToString(TDataMediator dataMediator);
 
-        protected Type GetDataType(TDataMediator dataMediator);
+        protected internal Type GetDataType(TDataMediator dataMediator);
 
-        protected TValue GetValueOrInitialize(TDataMediator dataMediator);
+        protected internal TValue GetValueOrInitialize(TDataMediator dataMediator);
     }
 }
