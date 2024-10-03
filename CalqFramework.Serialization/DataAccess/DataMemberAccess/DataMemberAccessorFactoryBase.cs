@@ -30,7 +30,7 @@ public abstract class DataMemberAccessorFactoryBase<TKey, TValue> {
         }
     }
 
-    protected IDataAccessor<TKey, TValue, MemberInfo> CreateFieldAndPropertyAccessor(object obj)
+    protected virtual IDataAccessor<TKey, TValue, MemberInfo> CreateFieldAndPropertyAccessor(object obj)
     {
         return new DualDataAccessor<TKey, TValue, MemberInfo>(CreateFieldAccessor(obj), CreatePropertyAccessor(obj));
     }
