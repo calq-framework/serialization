@@ -5,7 +5,7 @@ namespace CalqFramework.Serialization.DataAccess {
         public IDataAccessor<TKey, TValue> PrimaryAccessor { get; }
         public IDataAccessor<TKey, TValue> SecondaryAccessor { get; }
 
-        public TValue this[TKey key] {
+        public virtual TValue this[TKey key] {
             get {
                 AssertNoCollision(key);
 
@@ -91,7 +91,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public TValue this[TKey key] {
+        public virtual TValue this[TKey key] {
             get {
                 AssertNoCollision(key);
 

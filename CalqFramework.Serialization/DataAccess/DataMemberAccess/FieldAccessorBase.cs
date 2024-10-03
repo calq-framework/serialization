@@ -13,7 +13,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             }
         }
 
-        public object? this[TKey key] {
+        public virtual object? this[TKey key] {
             get {
                 var dataMediator = GetDataMediator(key);
                 return this[dataMediator];
