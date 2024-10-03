@@ -4,7 +4,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
     public abstract class FieldAccessorBase<TKey> : ClassMemberResolverBase<TKey, object?>, IDataAccessor<TKey, object?, MemberInfo> {
         public IEnumerable<MemberInfo> DataMediators => ParentType.GetFields();
 
-        public object? this[MemberInfo dataMediator] {
+        public virtual object? this[MemberInfo dataMediator] {
             get {
                 return ((FieldInfo)dataMediator).GetValue(ParentObject);
             }
@@ -13,7 +13,7 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             }
         }
 
-        public virtual object? this[TKey key] {
+        public object? this[TKey key] {
             get {
                 var dataMediator = GetDataMediator(key);
                 return this[dataMediator];

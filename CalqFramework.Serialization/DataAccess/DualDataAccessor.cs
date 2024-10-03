@@ -5,7 +5,7 @@ namespace CalqFramework.Serialization.DataAccess {
         public IDataAccessor<TKey, TValue> PrimaryAccessor { get; }
         public IDataAccessor<TKey, TValue> SecondaryAccessor { get; }
 
-        public virtual TValue this[TKey key] {
+        public TValue this[TKey key] {
             get {
                 AssertNoCollision(key);
 
@@ -74,7 +74,7 @@ namespace CalqFramework.Serialization.DataAccess {
 
         public IEnumerable<TDataMediator> DataMediators => PrimaryAccessor.DataMediators.Concat(SecondaryAccessor.DataMediators);
 
-        public TValue this[TDataMediator dataMediator] {
+        public virtual TValue this[TDataMediator dataMediator] {
             get {
                 if (PrimaryAccessor.ContainsDataMediator(dataMediator)) {
                     return PrimaryAccessor[dataMediator];
@@ -91,7 +91,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public virtual TValue this[TKey key] {
+        public TValue this[TKey key] {
             get {
                 AssertNoCollision(key);
 
