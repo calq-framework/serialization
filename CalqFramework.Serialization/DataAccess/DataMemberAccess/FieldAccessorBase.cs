@@ -52,5 +52,9 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         public string DataMediatorToString(MemberInfo dataMediator) {
             return dataMediator.Name;
         }
+
+        public override bool ContainsDataMediator(MemberInfo dataMediator) {
+            return dataMediator is FieldInfo && dataMediator.DeclaringType == ParentType;
+        }
     }
 }

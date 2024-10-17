@@ -19,10 +19,6 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
             return result != null;
         }
 
-        public bool ContainsDataMediator(MemberInfo dataMediator) {
-            return dataMediator.DeclaringType == ParentType;
-        }
-
         public bool TryGetDataMediator(TKey key, [MaybeNullWhen(false)] out MemberInfo result) {
             result = GetClassMember(key);
             return result != null;
@@ -33,5 +29,6 @@ namespace CalqFramework.Serialization.DataAccess.DataMemberAccess {
         }
 
         protected abstract MemberInfo? GetClassMember(TKey key);
+        public abstract bool ContainsDataMediator(MemberInfo key);
     }
 }
