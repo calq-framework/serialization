@@ -3,8 +3,8 @@ using CalqFramework.Serialization.Text;
 
 namespace CalqFramework.Serialization.DataAccess;
 
-// TODO consider CollectionAccessorFactory and accessor per collection type
-public class CollectionAccessor : IDataAccessor<string, object?>
+// TODO consider CollectionStoreFactory and accessor per collection type
+public class CollectionStore : IKeyValueStore<string, object?>
 {
     protected object ParentCollection { get; }
 
@@ -37,7 +37,7 @@ public class CollectionAccessor : IDataAccessor<string, object?>
         }
     }
    
-    public CollectionAccessor(ICollection collection) {
+    public CollectionStore(ICollection collection) {
         ParentCollection = collection;
     }
 

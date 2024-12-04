@@ -1,4 +1,4 @@
-using CalqFramework.Serialization.DataAccess.DataMemberAccess;
+using CalqFramework.Serialization.DataAccess.ClassMember;
 using CalqFramework.Serialization.Json;
 using System.Text;
 

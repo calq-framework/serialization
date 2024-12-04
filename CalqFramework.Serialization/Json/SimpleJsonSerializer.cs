@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using CalqFramework.Serialization.DataAccess.DataMemberAccess;
+using CalqFramework.Serialization.DataAccess.ClassMember;
 
 namespace CalqFramework.Serialization.Json
 {
@@ -7,14 +7,14 @@ namespace CalqFramework.Serialization.Json
     {
 
         public JsonSerializerOptions JsonSerializerOptions { get; init; }
-        public DataMemberAccessorOptions DataMemberAccessorOptions { get; init; }
+        public ClassDataMemberStoreFactoryOptions ClassDataMemberStoreOptions { get; init; }
 
-        private DataMemberAccessorFactory DataMemberAccessorFactory { get; init; }
+        private ClassDataMemberStoreFactory ClassDataMemberStoreFactory { get; init; }
 
         public SimpleJsonSerializer() {
             JsonSerializerOptions ??= new();
-            DataMemberAccessorOptions ??= new();
-            DataMemberAccessorFactory ??= new DataMemberAccessorFactory(DataMemberAccessorOptions);
+            ClassDataMemberStoreOptions ??= new();
+            ClassDataMemberStoreFactory ??= new ClassDataMemberStoreFactory(ClassDataMemberStoreOptions);
         }
     }
 }
