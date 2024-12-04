@@ -9,7 +9,7 @@ namespace CalqFramework.Serialization.DataAccess.ClassMember {
             return ParentType.GetProperty(key, BindingAttr);
         }
 
-        protected override bool ContainsAccessor(MemberInfo accessor) {
+        public override bool ContainsAccessor(MemberInfo accessor) {
             return accessor is PropertyInfo && accessor.DeclaringType == ParentType;
         }
     }

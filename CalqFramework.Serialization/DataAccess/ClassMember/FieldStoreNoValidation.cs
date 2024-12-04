@@ -2,8 +2,8 @@
 
 namespace CalqFramework.Serialization.DataAccess.ClassMember
 {
-    sealed public class FieldStore : FieldStoreBase<string> {
-        public FieldStore(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
+    sealed public class FieldStoreNoValidation : FieldStoreBase<string> {
+        public FieldStoreNoValidation(object obj, BindingFlags bindingAttr) : base(obj, bindingAttr) {
         }
 
         protected override MemberInfo? GetClassMember(string key) {
@@ -11,7 +11,7 @@ namespace CalqFramework.Serialization.DataAccess.ClassMember
         }
 
         public override bool ContainsAccessor(MemberInfo accessor) {
-            return accessor is FieldInfo && accessor.DeclaringType == ParentType;
+            return true;
         }
     }
 }

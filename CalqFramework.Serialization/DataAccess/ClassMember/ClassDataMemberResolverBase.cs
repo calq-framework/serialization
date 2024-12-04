@@ -28,6 +28,5 @@ namespace CalqFramework.Serialization.DataAccess.ClassMember {
         }
 
         protected abstract MemberInfo? GetClassMember(TKey key);
-        protected abstract bool ContainsAccessor(MemberInfo key);
     }
 }

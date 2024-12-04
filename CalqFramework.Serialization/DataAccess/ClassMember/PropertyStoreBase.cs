@@ -52,5 +52,7 @@ namespace CalqFramework.Serialization.DataAccess.ClassMember {
         public string AccessorToString(MemberInfo accessor) {
             return accessor.Name;
         }
+
+        public abstract bool ContainsAccessor(MemberInfo accessor);
     }
 }
