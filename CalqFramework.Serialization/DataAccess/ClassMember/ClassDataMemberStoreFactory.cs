@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace CalqFramework.Serialization.DataAccess.ClassMember;
 sealed public class ClassDataMemberStoreFactory : ClassDataMemberStoreFactoryBase<string, object?>
@@ -17,10 +16,10 @@ sealed public class ClassDataMemberStoreFactory : ClassDataMemberStoreFactoryBas
     }
 
     protected override IKeyValueStore<string, object?, MemberInfo> CreateFieldStore(object obj) {
-        return new FieldStore(obj, ClassDataMemberStoreFactoryOptions.BindingAttr);
+        return ClassDataMemberStoreFactoryOptions.AccessProperties == true ? new FieldStore(obj, ClassDataMemberStoreFactoryOptions.BindingAttr) : new FieldStoreNoValidation(obj, ClassDataMemberStoreFactoryOptions.BindingAttr);
     }
 
     protected override IKeyValueStore<string, object?, MemberInfo> CreatePropertyStore(object obj) {
-        return new PropertyStore(obj, ClassDataMemberStoreFactoryOptions.BindingAttr);
+        return ClassDataMemberStoreFactoryOptions.AccessFields == true ? new PropertyStore(obj, ClassDataMemberStoreFactoryOptions.BindingAttr) : new PropertyStoreNoValidation(obj, ClassDataMemberStoreFactoryOptions.BindingAttr); 
     }
 }
