@@ -52,9 +52,5 @@ namespace CalqFramework.Serialization.DataAccess.ClassMember {
         public string AccessorToString(MemberInfo accessor) {
             return accessor.Name;
         }
-
-        public override bool ContainsAccessor(MemberInfo accessor) {
-            return accessor is FieldInfo && accessor.DeclaringType == ParentType;
-        }
     }
 }
