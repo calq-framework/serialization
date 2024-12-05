@@ -68,7 +68,7 @@ namespace CalqFramework.Serialization.DataAccess {
         }
     }
 
-    public class DualDataAccessor<TKey, TValue, TAccessor> : IKeyValueStore<TKey, TValue, TAccessor> {
+    public class DualKeyValueStore<TKey, TValue, TAccessor> : IKeyValueStore<TKey, TValue, TAccessor> {
         public IKeyValueStore<TKey, TValue, TAccessor> PrimaryStore { get; }
         public IKeyValueStore<TKey, TValue, TAccessor> SecondaryStore { get; }
 
@@ -112,7 +112,7 @@ namespace CalqFramework.Serialization.DataAccess {
             }
         }
 
-        public DualDataAccessor(IKeyValueStore<TKey, TValue, TAccessor> primaryStore, IKeyValueStore<TKey, TValue, TAccessor> secondaryStore) {
+        public DualKeyValueStore(IKeyValueStore<TKey, TValue, TAccessor> primaryStore, IKeyValueStore<TKey, TValue, TAccessor> secondaryStore) {
             PrimaryStore = primaryStore;
             SecondaryStore = secondaryStore;
         }

@@ -32,7 +32,7 @@ public abstract class ClassDataMemberStoreFactoryBase<TKey, TValue> {
 
     protected virtual IKeyValueStore<TKey, TValue, MemberInfo> CreateFieldAndPropertyStore(object obj)
     {
-        return new DualDataAccessor<TKey, TValue, MemberInfo>(CreateFieldStore(obj), CreatePropertyStore(obj));
+        return new DualKeyValueStore<TKey, TValue, MemberInfo>(CreateFieldStore(obj), CreatePropertyStore(obj));
     }
     protected abstract IKeyValueStore<TKey, TValue, MemberInfo> CreateFieldStore(object obj);
     protected abstract IKeyValueStore<TKey, TValue, MemberInfo> CreatePropertyStore(object obj);
